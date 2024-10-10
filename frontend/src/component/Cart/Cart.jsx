@@ -44,7 +44,6 @@ const Cart = () => {
     const theme = useTheme();
     const jwt = localStorage.getItem("jwt");
 
-    
     const handleSubmit = (values) => {
         console.log("Selected Items before submission: ", cart.cartItems);
         
@@ -71,36 +70,38 @@ const Cart = () => {
     
             // Dữ liệu cần gửi cho từng đơn hàng
             const data = {
-                jwt,
+                jwt, 
                 order: {
                     restaurantId: restaurantId,
-                    items: items.map(item => ({
-                        foodId: item.food.id,
-                        quantity: item.quantity,
-                        price: item.totalPrice
-                    })),
                     deliveryAddress: {
-                        fullname: auth.user?.fullname,
+                        fullname: auth.user?.fullname || "Unknown",
                         streetAddress: values.streetAddress,
                         city: values.city,
                         stateProvince: values.stateProvince,
                         postalCode: values.postalCode,
                         country: "Việt Nam"
-                    }
+                    },
+                    items: items.map(item => ({
+                        foodId: item.food.id,
+                        quantity: item.quantity,
+                        price: item.totalPrice
+                    }))
                 }
             };
+            
+    
+            // Log dữ liệu sẽ gửi đến server
+            console.log("Data to send for restaurant ID:", restaurantId, data);
     
             // Gọi API để tạo đơn hàng cho từng nhà hàng
             return dispatch(createOrder(data)).then(response => {
-                console.log("API Response: ", response);
-    
-                // Kiểm tra phản hồi từ API
-                if (response?.success) {
-                    // Xóa các sản phẩm đã được thanh toán khỏi giỏ hàng
+                if (response.status === 200) {
+                    // Kiểm tra thông tin cụ thể trong response
+                    console.log("Order created successfully:", response.data);
+                    // Xóa sản phẩm khỏi giỏ hàng...
                     items.forEach(item => {
                         dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
                     });
-                    alert(`Thanh toán thành công cho nhà hàng ID: ${restaurantId}`);
                 } else {
                     alert(`Thanh toán không thành công cho nhà hàng ID: ${restaurantId}, vui lòng thử lại.`);
                 }
@@ -118,11 +119,12 @@ const Cart = () => {
             });
     };
     
+    
     return (
         <div>
             <main className="lg:flex justify-between">
                 <section className="lg:w-[30%] space-y-6 lg:min-h-screen pt-10">
-                    {cart.cartItems?.map((item) => <CartItem
+                    {cart.cartItems.map((item) => <CartItem
                         key={item.id}
                         item={item}
                     />)}

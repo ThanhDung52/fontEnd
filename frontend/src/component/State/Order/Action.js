@@ -10,30 +10,24 @@ export const createOrder = (reqData) =>{
         try {
             const { data } = await api.post(`/api/order`, reqData.order,{
                 headers:{
-                    Authorization:`Bearer ${reqData.jwt}`
+                    Authorization: `Bearer ${reqData.jwt}`
                 }
             })
-            // if(data.payment_url){
-            //     window.location.href = data.payment_url;
-            // }
+            if(data.payment_url){
+                // window.location.href = data.payment_url;
+            }
             console.log("create order data", data);
-            const response = { success: true, ...data };
+            
+
             dispatch({type:CREATE_ORDER_SUCCESS, payload:data})
         } catch (error) {
-            console.error("Error creating order: ", error);
-    if (error.response) {
-        console.log("Server responded with: ", error.response.data);
-        dispatch({ type: CREATE_ORDER_FAILURE, payload: error.response.data });
-    } else if (error.request) {
-        console.log("No response received: ", error.request);
-        dispatch({ type: CREATE_ORDER_FAILURE, payload: { message: "No response from server" } });
-    } else {
-        console.log("Error setting up request: ", error.message);
-        dispatch({ type: CREATE_ORDER_FAILURE, payload: { message: error.message } });
-    }
+            console.log("Sending token:", reqData.jwt);
+            console.log("error create order data", error);
+            dispatch({type:CREATE_ORDER_FAILURE, payload:error})
         }
     }
 }
+
 
 export const getUsersOrders =(jwt) =>{
     return async (dispatch) =>{
