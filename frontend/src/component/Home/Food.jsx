@@ -35,27 +35,13 @@ useEffect(()=>{
           color: theme.palette.text.primary, // Màu chữ
           border: `2px solid ${theme.palette.divider}`, // Viền
           }} >
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
     <CardMedia
   component="img"
   image={food.images[0]}
   alt="Food dish"
   sx={{
-    width: 300,          // Đặt chiều rộng cố định
-    height: 200,         // Đặt chiều cao cố định
+    width: '100%',         
+    height: '200px',      
     objectFit: "cover",  // Giữ tỷ lệ và cắt hình ảnh nếu cần để lấp đầy khung
   }}
 />
@@ -68,31 +54,6 @@ useEffect(()=>{
           {food.price}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography sx={{ marginBottom: 2 }}>Method:</Typography>
-          <Typography sx={{ marginBottom: 2 }}>
-            {food.description}
-          </Typography>
-          
-        </CardContent>
-      </Collapse>
     </Card>
     )
 }

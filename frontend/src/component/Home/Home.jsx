@@ -10,6 +10,8 @@ import { findCart } from "../State/Cart/Action";
 import { getAllFood } from "../State/Food/Action";
 import Food from "./Food";
 import { useTheme } from "@mui/material";
+import { Category } from "./Category";
+import { Footer } from "./footer";
 
 const restaurants = [1,1,1,1,1,1,1,1,1,1]
 
@@ -48,15 +50,20 @@ console.log("food", foods);
 
             </div>
         </section>
-        <section className="p-10 lg:py-10 lg:px-20">
+
+        <section>
+            <Category/>
+        </section>
+        {/* <section className="p-10 lg:py-10 lg:px-20">
             <p className="text-2xl font-semibold text-gray-400 py-3 pb-10" style={{ color: theme.palette.text.secondary }}>Top Meels</p>
             <div className="flex flex-wrap items-center justify-start  gap-5 ">
             {
-            foods.foods?.map((food)=> <Food food={food} /> )
+            foods.foods?.map((food)=> <Food key={food.id}  food={food} /> )
            }
            </div>
           
-        </section>
+        </section> */}
+        
         <section className="px-5 lg:px-20" pt-10>
            <h1 className="text-2xl font-semibold text-gray-400 py-3" style={{ color: theme.palette.text.secondary }}>Order From Our Handpicked Favorites</h1>
            <div className="flex flex-wrap items-center justify-around gap-5">
@@ -65,6 +72,10 @@ console.log("food", foods);
                 }
            </div>
         </section>
+
+        <Footer/>
         </div>
+
+    
     )
 }
