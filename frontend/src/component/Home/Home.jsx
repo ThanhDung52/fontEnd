@@ -50,6 +50,12 @@ console.log("food", foods);
 
             </div>
         </section>
+        <section className="p-10 lg:py-5 lg:px-10">
+            <h2 className="text-2xl font-semibold">
+            Danh mục món ăn 
+        </h2>
+        </section>
+        
 
         <section>
             <Category/>

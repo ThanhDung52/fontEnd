@@ -11,12 +11,13 @@ import { findCart } from './component/State/Cart/Action';
 import Routers from './Routers/Routers';
 import { lightTheme } from './Theme/LightTheme';
 import { getRestaurantById, getRestaurantByUserId } from './component/State/Restaurant/Action';
+import { useLocation } from 'react-router-dom';
 
 function App() {
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
     const { auth } = useSelector(store => store);
-    
+    const location = useLocation();
     const [darkMode, setDarkMode] = useState(false); // State quản lý chế độ sáng/tối
 
     // Toggle chức năng chuyển chế độ
@@ -40,12 +41,15 @@ function App() {
     useEffect(()=>{
         dispatch(getRestaurantByUserId(auth.jwt || jwt))
     },[auth.user])
+    const hideNavbarRoutes = ['/admin', '/admins'];
+    const shouldHideNavbar = hideNavbarRoutes.some(route => location.pathname.startsWith(route));
 
     return (
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
             <CssBaseline />
-            <Navbar darkMode={darkMode} toggleDarkMode={handleThemeChange} /> {/* Truyền darkMode và toggleDarkMode */}
-            <Routers />
+            {!shouldHideNavbar && (
+                <Navbar darkMode={darkMode} toggleDarkMode={handleThemeChange} />
+            )}            <Routers />
         </ThemeProvider>
     );
 }
