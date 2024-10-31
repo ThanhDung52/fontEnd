@@ -1,3 +1,4 @@
+import React from 'react'; 
 import logo from './logo.svg';
 import './App.css';
 import { Navbar } from './component/Navbar/Navbar';
@@ -12,6 +13,7 @@ import Routers from './Routers/Routers';
 import { lightTheme } from './Theme/LightTheme';
 import { getRestaurantById, getRestaurantByUserId } from './component/State/Restaurant/Action';
 import { useLocation } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 function App() {
     const dispatch = useDispatch();
@@ -44,13 +46,16 @@ function App() {
     const hideNavbarRoutes = ['/admin', '/admins'];
     const shouldHideNavbar = hideNavbarRoutes.some(route => location.pathname.startsWith(route));
 
+
     return (
+       
         <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
             <CssBaseline />
             {!shouldHideNavbar && (
                 <Navbar darkMode={darkMode} toggleDarkMode={handleThemeChange} />
             )}            <Routers />
         </ThemeProvider>
+       
     );
 }
 

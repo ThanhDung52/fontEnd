@@ -14,7 +14,7 @@ export const createOrder = (reqData) =>{
                 }
             })
             if(data.payment_url){
-                // window.location.href = data.payment_url;
+                window.location.href = data.payment_url;
             }
             console.log("create order data", data);
             

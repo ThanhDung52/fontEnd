@@ -1,5 +1,5 @@
 import { Chip, IconButton, useTheme } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useDispatch, useSelector } from "react-redux";
@@ -7,19 +7,33 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { removeCartItem, updateCariItem } from "../State/Cart/Action";
 
 const CartItem = ({ item }) => {
-    const { auth } = useSelector((store) => store);
+    const { auth, cart } = useSelector((store) => store);
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
     const theme = useTheme();
 
+    // const handleUpdateCartItem = (value) => {
+    //     if (value === -1 && item.quantity === 1) {
+    //         handleRemoveCartItem();
+    //     } else if (value !== 0) { // Tránh cập nhật nếu không có thay đổi số lượng
+    //         const data = { cartItemId: item.id, quantity: item.quantity + value };
+    //         dispatch(updateCariItem({ data, jwt }));
+    //     }
+    // };
+
     const handleUpdateCartItem = (value) => {
         if (value === -1 && item.quantity === 1) {
             handleRemoveCartItem();
-        } else {
-            const data = { cartItemId: item.id, quantity: item.quantity + value };
+        } else if (value !== 0) { // Tránh cập nhật nếu không có thay đổi số lượng
+            const newQuantity = item.quantity + value;
+            const data = { 
+                cartItemId: item.id, 
+                quantity: newQuantity 
+            };
             dispatch(updateCariItem({ data, jwt }));
         }
     };
+    
 
     const handleRemoveCartItem = () => {
         dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
@@ -62,7 +76,7 @@ const CartItem = ({ item }) => {
                     size="small"
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'red', // Chuyển nền sang đỏ khi hover
+                            backgroundColor: 'red',
                         },
                     }}
                     onClick={handleRemoveCartItem}

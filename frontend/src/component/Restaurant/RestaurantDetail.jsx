@@ -67,32 +67,20 @@ const RestaurantDetail = () => {
     },[selectedCategory,foodType])
 
     return (
-        <div className="px-5 lg:px-20">
+        <div className="px-5 lg:px-0">
             <section>
-                <h3>Home/india/indian fast food/3</h3>
+                <h3></h3>
                 <div>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <img className="w-full h-[40vh] object-cover"
+                            <img className="w-full h-[90vh] object-cover"
                                 src={restaurant.restaurant?.images[1]}
-                                alt=""
-                            />
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <img className="w-full h-[40vh] object-cover"
-                                src={restaurant.restaurant?.images[1]}
-                                alt=""
-                            />
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                            <img className="w-full h-[40vh] object-cover"
-                                src={restaurant.restaurant?.images[2]}
                                 alt=""
                             />
                         </Grid>
                     </Grid>
                 </div>
-                <div className="pt-3 pb-5">
+                <div className="pt-3 pb-5 lg:px-10">
                     <h1 className="text-4xl font-semibold">{restaurant.restaurant?.name}</h1>
                     <p className="text-gray-500 flex items-center gap-3">
                        {restaurant.restaurant?.description}
@@ -101,23 +89,23 @@ const RestaurantDetail = () => {
                         <p className="text-gray-500 flex items-center gap-3">
                             <LocationOnIcon />
                             <spam>
-                                Mumbai, Maharstra
+                            {restaurant.restaurant?.address?.streetAddress},  {restaurant.restaurant?.address?.city}
                             </spam>
                         </p>
                         <p className="text-gray-500 flex items-center gap-3">
                             <CalendarTodayIcon />
                             <spam>
-                                Mon-Sun: 9:00 AM - 9:00 PM (Today)
+                            {restaurant.restaurant?.openingHours    } (Today)
                             </spam>
                         </p>
                     </div>
                 </div>
             </section>
             <Divider/>
-            <section className="pt-[2rem] lg:flex relative">
+            <section className="pt-[2rem] lg:flex relative lg:px-10">
                 <div className="space-y-10 lg:w-[20%] filter">
                     <div className="box space-y-5 lg:sticky top-28 p-5 shadow-md">
-                        <div>
+                        {/* <div>
                             <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
                                 Food Type
                             </Typography>
@@ -133,8 +121,8 @@ const RestaurantDetail = () => {
                                             label={item.label} />)}
                                 </RadioGroup>
                             </FormControl>
-                        </div>
-                        <Divider/>
+                        </div> */}
+                        {/* <Divider/> */}
                         <div>
                             <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
                                 Food Category
@@ -162,7 +150,7 @@ const RestaurantDetail = () => {
                 </div>
 
                 <div className="space-y-5 lg:w-[80%] lg:pl-10">
-                   {menu.menuItems.map((item)=><MenuCart item={item}/>)}
+                   {menu.menuItems.map((item)=><MenuCart key={item.id}  item={item}/>)}
                 </div>
 
             </section>

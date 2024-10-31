@@ -36,6 +36,7 @@ console.log("food", foods);
 
 
     return (
+        <div>
         <div className="pb-10">
         <section className="banner -z-50 relative flex flex-col justify-center items-center">
             <div className="w-[50vw] z-10 text-center">
@@ -79,9 +80,9 @@ console.log("food", foods);
            </div>
         </section>
 
-        <Footer/>
         </div>
 
-    
+        <Footer/>
+        </div>
     )
 }

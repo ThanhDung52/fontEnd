@@ -45,7 +45,7 @@ const RestaurantCart = ({ item }) => {
             <div className="cursor-pointer relative">
                 <img
                     className="w-full h-[10rem] rounded-t-md object-cover" // Sử dụng các lớp CSS để điều chỉnh kích thước
-                    src={item.images[2]}
+                    src={item.images[0]}
                     alt=""
                     style={{
                         width: '100%',      // Đặt chiều rộng là 100% để chiếm toàn bộ không gian

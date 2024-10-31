@@ -190,7 +190,7 @@ export const RestaurantDetails = () => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <UpdateRestaurantForm restaurantData={restaurant.userRestaurant} onUpdateSuccess={handleClose} />
+                    <UpdateRestaurantForm restaurantData={restaurant.userRestaurant} onUpdateSuccess={handleClose}/>
                 </Box>
             </Modal>
         </Box>

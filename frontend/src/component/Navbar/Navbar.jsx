@@ -16,7 +16,8 @@ export const Navbar = ({ darkMode, toggleDarkMode }) => {
     const handleAvatarClick = () => {
         if (auth.user.role === "ROLE_CUSTOMER") {
             navigate("/my-profile");
-        } else {
+        }     
+        else {
             navigate("/admin/restaurants");
         }
     };

@@ -30,6 +30,9 @@ import { CREATE_CATEGORY_FAILURE,
     GET_RESTAURANT_CATEGORY_FAILURE, 
     GET_RESTAURANT_CATEGORY_REQUEST, 
     GET_RESTAURANT_CATEGORY_SUCCESS, 
+    GET_RESTAURANTREVENUE_FAILURE, 
+    GET_RESTAURANTREVENUE_REQUEST, 
+    GET_RESTAURANTREVENUE_SUCCESS, 
     GET_RESTAURANTS_EVENTS_FAILURE, 
     GET_RESTAURANTS_EVENTS_REQUEST, 
     GET_RESTAURANTS_EVENTS_SUCCESS, 
@@ -296,6 +299,24 @@ export const getRestaurantsCategory =({jwt, restaurantId}) =>{
         } catch (error) {
             console.log("error get restaurant category", error);
             dispatch({type:GET_RESTAURANT_CATEGORY_FAILURE, payload:error})
+        }
+    }
+}
+
+export const getrestaurantrevenue=(jwt)=>{
+    return async (dispatch) =>{
+        dispatch({type:GET_RESTAURANTREVENUE_REQUEST})
+        try {
+            const res = await api.get(`/api/admin/restaurants/revenues`,{
+                headers:{
+                    Authorization: `Bearer ${jwt}`
+                }
+            })
+            console.log("get restaurantrevenue", res.data);
+            dispatch({type:GET_RESTAURANTREVENUE_SUCCESS, payload: res.data})
+        } catch (error) {
+            console.log("erorr restaurantrevenue", error);
+            dispatch({type:GET_RESTAURANTREVENUE_FAILURE, payload: error})
         }
     }
 }

@@ -1,4 +1,4 @@
-import { type } from "@testing-library/user-event/dist/type"
+
 import { api } from "../../Config/api"
 import { GET_ALL_FOOD_FAILURE, GET_ALL_FOOD_REQUEST, GET_ALL_FOOD_SUCCESS } from "./ActionType"
 

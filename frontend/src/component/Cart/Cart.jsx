@@ -95,16 +95,12 @@ const Cart = () => {
     
             // Gọi API để tạo đơn hàng cho từng nhà hàng
             return dispatch(createOrder(data)).then(response => {
-                if (response.status === 200) {
-                    // Kiểm tra thông tin cụ thể trong response
+                // Kiểm tra thông tin cụ thể trong response
                     console.log("Order created successfully:", response.data);
                     // Xóa sản phẩm khỏi giỏ hàng...
                     items.forEach(item => {
                         dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
-                    });
-                } else {
-                    alert(`Thanh toán không thành công cho nhà hàng ID: ${restaurantId}, vui lòng thử lại.`);
-                }
+                    });        
             });
         });
     

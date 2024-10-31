@@ -1,9 +1,4 @@
 
-
-
-
-
-import { type } from "@testing-library/user-event/dist/type";
 import {API_URL, api} from "../../Config/api"
 import { CREATE_INGREDIENT_CATEGORY_SUCCESS, CREATE_INGREDIENT_SUCCESS, GET_INGREDIENT_CATEGORY_LAILURE, GET_INGREDIENT_CATEGORY_REQUEST, GET_INGREDIENT_CATEGORY_SUCCESS, GET_INGREDIENTS, UPDATE_STOCK } from "./ActionType";
 

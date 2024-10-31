@@ -8,7 +8,8 @@ const initialState = {
     error: null,
     events: [],
     restaurantsEvents: [],
-    categories: []
+    categories: [],
+    restaurantRevenues: []
 }
 
 const restaurantReducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const restaurantReducer = (state = initialState, action) => {
         case actionType.GET_RESTAURANT_BY_ID_REQUEST:
         case actionType.CREATE_CATEGORY_REQUEST:
         case actionType.GET_RESTAURANT_CATEGORY_REQUEST:
+        case actionType.GET_RESTAURANTREVENUE_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -37,6 +39,18 @@ const restaurantReducer = (state = initialState, action) => {
                 loading: false,
                 restaurants: action.payload
             }
+        case actionType.GET_RESTAURANTREVENUE_SUCCESS: // Xử lý trạng thái SUCCESS cho GET_RESTAURANTREVENUE
+            return {
+                ...state,
+                loading: false,
+                restaurantRevenues: action.payload // Cập nhật doanh thu của nhà hàng
+            };
+        case actionType.GET_RESTAURANTREVENUE_FAILURE: // Xử lý trạng thái FAILURE cho GET_RESTAURANTREVENUE
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            };
         case actionType.GET_RESTAURANT_BY_ID_SUCCESS:
             return {
                 ...state,
