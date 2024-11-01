@@ -70,15 +70,17 @@ console.log("food", foods);
            </div>
           
         </section> */}
-        
-        <section className="px-5 lg:px-20" pt-10>
-           <h1 className="text-2xl font-semibold text-gray-400 py-3" style={{ color: theme.palette.text.secondary }}>Order From Our Handpicked Favorites</h1>
-           <div className="flex flex-wrap items-center justify-around gap-5">
-                {
-                    restaurant.restaurants.map((item) => <RestaurantCart item={item}/>)
-                }
-           </div>
-        </section>
+       <section className="px-5 lg:px-20 pt-10">
+    <h1 className="text-2xl font-semibold text-gray-400 py-3" style={{ color: theme.palette.text.secondary }}>
+        Order From Our Handpicked Favorites
+    </h1>
+    <div className="flex flex-wrap items-center justify-center gap-5"> {/* Thay justify-around bằng justify-center */}
+        {
+            restaurant.restaurants.map((item) => <RestaurantCart key={item.id} item={item} />) // Thêm key cho phần tử
+        }
+    </div>
+</section>
+
 
         </div>
 

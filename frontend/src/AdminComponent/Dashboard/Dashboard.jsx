@@ -1,132 +1,158 @@
-import React, { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchRestaurantsOrder } from "../../component/State/Restaurant Order/Action";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { Paper } from "@mui/material";
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import React, { useEffect } from 'react';
+import Chart from 'chart.js/auto';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 export const RestaurantDashboard = () => {
-  const dispatch = useDispatch();
-  const { restaurant, restaurantOrder } = useSelector((store) => store);
-  const jwt = localStorage.getItem("jwt");
+  let barChart, pieChart, lineChart;
 
-  useEffect(() => {
-    if (restaurant.userRestaurant?.id && jwt) {
-      dispatch(fetchRestaurantsOrder({
-        jwt,
-        restaurantId: restaurant.userRestaurant.id,
-      }));
-    }
-  }, [restaurant.userRestaurant?.id, jwt, dispatch]);
-
-  const getMonthlyOrderData = () => {
-    const data = {};
-    let totalRevenue = 0;
-
-    if (restaurantOrder.orders) {
-      restaurantOrder.orders.forEach((order) => {
-        const orderDate = new Date(order.orderDate);
-        const yearMonth = `${orderDate.getFullYear()}-${(orderDate.getMonth() + 1).toString().padStart(2, '0')}`;
-        const orderTotal = order.totalPrice || 0;
-
-        if (!data[yearMonth]) {
-          data[yearMonth] = {
-            month: yearMonth,
-            totalOrders: 0,
-            totalAmount: 0,
-            orders: []
-          };
-        }
-        data[yearMonth].totalOrders++;
-        data[yearMonth].totalAmount += orderTotal;
-        data[yearMonth].orders.push({
-          date: orderDate.toLocaleDateString(),
-          price: orderTotal,
-        });
-
-        totalRevenue += orderTotal;
-      });
-    }
-
-    return {
-      monthlyData: Object.keys(data).map(key => ({
-        month: key,
-        totalOrders: data[key].totalOrders,
-        totalAmount: data[key].totalAmount,
-        orders: data[key].orders,
-      })),
-      totalRevenue
-    };
+  const updateData = () => {
+    document.getElementById('updateTime').textContent = new Date().toLocaleString();
+    alert("Dữ liệu mới đã được tải!");
   };
 
-  const { monthlyData, totalRevenue } = useMemo(getMonthlyOrderData, [restaurantOrder.orders]);
+  const exportReport = async () => {
+    const doc = new jsPDF();
+    doc.setFont("TimesNewRoman", "bold");
+    doc.setFontSize(22);
+    doc.text("Báo cáo thống kê bán hàng", 20, 20);
+    doc.setFont("TimesNewRoman", "normal");
+    doc.setFontSize(12);
+    doc.text("Tổng Doanh Thu: $50,000", 20, 40);
+    doc.text("Số Đơn Hàng: 1,200", 20, 50);
+    doc.text("Lợi Nhuận: $12,000", 20, 60);
+    doc.text("Khách Hàng Truy Cập: 35,000", 20, 70);
+    doc.text("Dữ liệu cập nhật vào: " + new Date().toLocaleString(), 20, 80);
+
+    const columns = ["Tên Sản Phẩm", "Số Lượng Bán", "Giá", "Tổng Doanh Thu"];
+    const rows = [
+      ["Bánh Mì", "500", "$3.00", "$1,500"],
+      ["Pizza", "300", "$10.00", "$3,000"],
+      ["Salad", "200", "$5.00", "$1,000"],
+    ];
+
+    doc.autoTable({
+      head: [columns],
+      body: rows,
+      startY: 100,
+      theme: 'grid',
+      headStyles: { fillColor: [54, 162, 235] },
+      styles: { cellPadding: 5 },
+      columnStyles: {
+        0: { halign: 'left' },
+        1: { halign: 'center' },
+        2: { halign: 'right' },
+        3: { halign: 'right' }
+      },
+    });
+
+    doc.save("baocao_thongke_banhang.pdf");
+  };
+
+  useEffect(() => {
+    // Create bar chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    barChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+        datasets: [{
+          label: 'Doanh thu',
+          data: [5000, 7000, 8000, 6000, 9000],
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
+        }
+      }
+    });
+
+    // Create pie chart
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    pieChart = new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Thẻ tín dụng', 'Tiền mặt', 'Chuyển khoản'],
+        datasets: [{
+          data: [40, 30, 30],
+          backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)'],
+        }]
+      },
+      options: {
+        responsive: true,
+      }
+    });
+
+    // Create line chart
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    lineChart = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
+        datasets: [{
+          label: 'Khách hàng',
+          data: [1000, 1500, 2000, 2500],
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
+        }
+      }
+    });
+
+    // Update data display time
+    updateData();
+
+    return () => {
+      // Destroy charts on cleanup to avoid reuse error
+      if (barChart) barChart.destroy();
+      if (pieChart) pieChart.destroy();
+      if (lineChart) lineChart.destroy();
+    };
+  }, []);
 
   return (
-    <div className="space-y-8">
-      {/* Biểu đồ thống kê đơn hàng */}
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <div className="flex items-center mb-4">
-          <TrendingUpIcon className="text-green-500 mr-2" style={{ fontSize: 32 }} />
-          <h2 className="text-xl font-semibold">Monthly Order Statistics</h2>
+    <div className="bg-gray-100">
+      <header className="flex justify-between items-center p-5 bg-gray-200 shadow-md">
+        <h1 className="text-2xl text-gray-800">Thống kê bán hàng</h1>
+        <p className="text-sm text-gray-600">Dữ liệu cập nhật vào: <span id="updateTime"></span></p>
+        <div>
+          <button className="bg-green-500 text-white px-4 py-2 rounded hover:opacity-80" onClick={updateData}>Tải dữ liệu mới</button>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:opacity-80" onClick={exportReport}>Xuất báo cáo PDF</button>
         </div>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={monthlyData} margin={{ top: 20, right: 20, left: 0, bottom: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="totalAmount" stroke="#4F46E5" name="Total Amount" dot={{ r: 6 }} activeDot={{ r: 8 }} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      </header>
 
-      {/* Bảng thống kê đơn hàng theo từng tháng */}
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <div className="flex items-center mb-4">
-          <ReceiptIcon className="text-yellow-500 mr-2" style={{ fontSize: 32 }} />
-          <h2 className="text-xl font-semibold">Monthly Order Table</h2>
+      <div className="max-w-6xl mx-auto p-5 grid grid-cols-1 gap-4">
+        {/* Info Cards */}
+        <div className="bg-white rounded-lg p-5 shadow-md"> {/* Similar for each info card */} </div>
+
+        {/* Bar Chart */}
+        <div className="bg-white rounded-lg p-5 shadow-md">
+          <h3 className="mb-4 text-lg text-gray-800">Doanh thu theo tháng</h3>
+          <canvas id="barChart"></canvas>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-300 rounded-md">
-            <thead>
-              <tr className="bg-gray-200 text-gray-700 text-left">
-                <th className="p-4 border-b border-gray-300">Month</th>
-                <th className="p-4 border-b border-gray-300">Order Date</th>
-                <th className="p-4 border-b border-gray-300">Price</th>
-                <th className="p-4 border-b border-gray-300">Total Orders</th>
-                <th className="p-4 border-b border-gray-300">Total Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {monthlyData.map((row) => (
-                <React.Fragment key={row.month}>
-                  {row.orders.map((order, index) => (
-                    <tr key={`${row.month}-${index}`} className="hover:bg-gray-50">
-                      <td className="p-4 border-b border-gray-300">{index === 0 ? row.month : ''}</td>
-                      <td className="p-4 border-b border-gray-300">{order.date}</td>
-                      <td className="p-4 border-b border-gray-300 text-right">{order.price.toLocaleString()}</td>
-                      {index === 0 && (
-                        <>
-                          <td className="p-4 border-b border-gray-300 text-right" rowSpan={row.orders.length}>
-                            <strong>{row.totalOrders}</strong>
-                          </td>
-                          <td className="p-4 border-b border-gray-300 text-right" rowSpan={row.orders.length}>
-                            <strong>{row.totalAmount.toLocaleString()}</strong>
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  ))}
-                </React.Fragment>
-              ))}
-              <tr className="bg-gray-100 font-semibold">
-                <td className="p-4 border-t border-gray-300" colSpan={4}>Total Revenue</td>
-                <td className="p-4 border-t border-gray-300 text-right">{totalRevenue.toLocaleString()}</td>
-              </tr>
-            </tbody>
-          </table>
+
+        {/* Pie Chart */}
+        <div className="bg-white rounded-lg p-5 shadow-md">
+          <h3 className="mb-4 text-lg text-gray-800">Phương thức thanh toán</h3>
+          <canvas id="pieChart"></canvas>
+        </div>
+
+        {/* Line Chart */}
+        <div className="bg-white rounded-lg p-5 shadow-md col-span-2">
+          <h3 className="mb-4 text-lg text-gray-800">Khách hàng truy cập</h3>
+          <canvas id="lineChart"></canvas>
         </div>
       </div>
     </div>

@@ -52,7 +52,8 @@ export const RestaurantDetails = () => {
                         </Button>
                     </div>
                     <div >
-                        <Button onClick={handleOpen} color="primary" className="py-[1rem] px-[2rem]"
+                        <Button onClick={handleOpen} color="primary" 
+                        className="py-[1rem] px-[2rem]"
                             variant="contained"
                             size="large">
                             Update

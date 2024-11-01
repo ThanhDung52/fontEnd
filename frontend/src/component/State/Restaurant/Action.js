@@ -147,23 +147,23 @@ import { CREATE_CATEGORY_FAILURE,
 };
 
 
- export const deleteRestaurant = ({restaurantId, jwt}) =>{
-    return async (dispatch) =>{
-        dispatch({type:DELETE_RESTAURANT_REQUEST})
+export const deleteRestaurant = ({ restaurantId, jwt }) => {
+    return async (dispatch) => {
+        dispatch({ type: DELETE_RESTAURANT_REQUEST });
         try {
-            const res = await api.delete(`/api/admin/restaurant/${restaurantId}`,{
-                headers:{
+            const res = await api.delete(`/api/admin/restaurants/${restaurantId}`, {
+                headers: {
                     Authorization: `Bearer ${jwt}`,
-                }
-            })
-            dispatch({type:DELETE_RESTAURANT_SUCCESS, payload: res.restaurantId})
+                },
+            });
+            dispatch({ type: DELETE_RESTAURANT_SUCCESS, payload: restaurantId }); // Sử dụng restaurantId
             console.log("delete restaurant", res.data);
         } catch (error) {
             console.log("catch error", error);
-            dispatch({type:DELETE_RESTAURANT_FAILURE, payload:error})
+            dispatch({ type: DELETE_RESTAURANT_FAILURE, payload: error });
         }
-    }
- }
+    };
+};
 
  export const updateRestaurantStatus = ({ restaurantId, jwt}) => {
     return async (dispatch) =>{

@@ -1,5 +1,5 @@
 import { Avatar, Badge, Box, IconButton, Switch } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import { pink } from "@mui/material/colors";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -11,15 +11,21 @@ import "./Navbar.css"
 export const Navbar = ({ darkMode, toggleDarkMode }) => {
     const { auth, cart } = useSelector((store) => store);
     const navigate = useNavigate();
-    const itemCount = cart.cartItems.length || 0;
+    const itemCount = (cart.cartItems && cart.cartItems.length) || 0;
+    
+    // Thêm state cho thanh tìm kiếm
+    const [showSearch, setShowSearch] = useState(false);
 
     const handleAvatarClick = () => {
-        if (auth.user.role === "ROLE_CUSTOMER") {
+        if (auth.user && auth.user.role === "ROLE_CUSTOMER") {
             navigate("/my-profile");
-        }     
-        else {
+        } else {
             navigate("/admin/restaurants");
         }
+    };
+
+    const toggleSearch = () => {
+        setShowSearch(!showSearch);
     };
 
     return (
@@ -33,15 +39,24 @@ export const Navbar = ({ darkMode, toggleDarkMode }) => {
             </div>
 
             <div className="flex items-center space-x-2 lg:space-x-10">
+                {/* Thanh tìm kiếm */}
+                {showSearch && (
+                    <input 
+                        type="text" 
+                        placeholder="Tìm kiếm..." 
+                        className="border rounded-md px-2 py-1" 
+                        onBlur={() => setShowSearch(false)} // Ẩn khi mất tiêu điểm
+                    />
+                )}
                 <div>
-                    <IconButton>
+                    <IconButton onClick={toggleSearch}>
                         <SearchIcon sx={{ fontSize: "1.5rem" }} />
                     </IconButton>
                 </div>
                 <div>
                     {auth.user ? (
                         <Avatar onClick={handleAvatarClick} sx={{ bgcolor: "white", color: pink[400] }}>
-                            {auth.user?.fullname[0].toUpperCase()}
+                            {auth.user.fullname ? auth.user.fullname[0].toUpperCase() : ""}
                         </Avatar>
                     ) : (
                         <IconButton onClick={() => navigate("/account/login")}>
@@ -56,7 +71,6 @@ export const Navbar = ({ darkMode, toggleDarkMode }) => {
                         </Badge>
                     </IconButton>
                 </div>
-                {/* Nút chuyển đổi chế độ */}
                 <div>
                     <Switch 
                         checked={darkMode} 

@@ -21,6 +21,13 @@ export const authReducer = (state = initialState, action) => {
             return { ...state, isLoading: true, error: null, success: null };
         
         case REGISTER_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                jwt: action.payload,
+                user: { role: action.payload.role }, // Cập nhật user với role
+                success: "Login success",
+            };
         case LOGIN_SUCCESS:
             return {
                 ...state,

@@ -95,6 +95,14 @@ const restaurantReducer = (state = initialState, action) => {
                 loading: false,
                 restaurantsEvents: action.payload
             }
+            case actionType.DELETE_RESTAURANT_SUCCESS:
+                return {
+                    ...state,
+                    loading: false,
+                    restaurants: state.restaurants.filter(
+                        (restaurant) => restaurant.id !== action.payload
+                    ),
+                };           
         case actionType.DELETE_EVENTS_SUCCESS:
             return {
                 ...state,
