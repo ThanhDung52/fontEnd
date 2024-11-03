@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Box, Card, CardContent, CardMedia, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Button, Card, CardContent, CardMedia, Typography, useTheme } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
+import { addItemToCart } from "../State/Cart/Action";
 
 const Food = ({ food }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { foods } = useSelector((store) => store);
     const theme = useTheme();
-
+    const [selectedIngredients, setselectrdIngredients] = useState([])
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -31,6 +32,24 @@ const Food = ({ food }) => {
             </Box>
         );
     };
+    const handleAddItemToCart = (e) => {
+        e.preventDefault()
+        const reqData = {
+
+            token: localStorage.getItem("jwt"),
+            cartItem: {
+                foodId: food.id,
+                quantity: 1,
+                ingredients: selectedIngredients,
+            }
+        }
+        dispatch(addItemToCart(reqData))
+        console.log("reqData", reqData);
+
+       
+
+    }
+
 
     return (
         <Card
@@ -44,6 +63,7 @@ const Food = ({ food }) => {
             }}
             onMouseEnter={handleExpandClick}
             onMouseLeave={handleExpandClick}
+            
         >
             <CardMedia
                 component="img"
@@ -69,6 +89,7 @@ const Food = ({ food }) => {
             </CardContent>
 
             <Box
+              onClick={handleAddItemToCart} 
                 sx={{
                     position: 'absolute',
                     bottom: expanded ? '10px' : '-50px',
@@ -86,6 +107,7 @@ const Food = ({ food }) => {
                     zIndex: 10,
                     fontSize: '16px',
                 }}
+                
             >
                 Add to Cart
             </Box>

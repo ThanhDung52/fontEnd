@@ -8,7 +8,7 @@ export const RestaurantDashboard = () => {
 
   const updateData = () => {
     document.getElementById('updateTime').textContent = new Date().toLocaleString();
-    alert("Dữ liệu mới đã được tải!");
+    // alert("Dữ liệu mới đã được tải!");
   };
 
   const exportReport = async () => {
