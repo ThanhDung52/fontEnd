@@ -10,7 +10,7 @@ const Food = ({ food }) => {
     const dispatch = useDispatch();
     const { foods } = useSelector((store) => store);
     const theme = useTheme();
-    const [selectedIngredients, setselectrdIngredients] = useState([])
+    const [selectedIngredients, setselectrdIngredients] = useState([]);
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -27,90 +27,126 @@ const Food = ({ food }) => {
                 ))}
                 <StarIcon key={5} color="disabled" />
                 <Typography variant="body2" sx={{ marginLeft: 1, color: theme.palette.text.secondary }}>
-                    {rating} ({food.reviewCount} đánh giá)
+                    {rating} {food.reviewCount}
                 </Typography>
             </Box>
         );
     };
-    const handleAddItemToCart = (e) => {
-        e.preventDefault()
-        const reqData = {
 
+    const handleAddItemToCart = (e) => {
+        e.preventDefault();
+        const reqData = {
             token: localStorage.getItem("jwt"),
             cartItem: {
                 foodId: food.id,
                 quantity: 1,
                 ingredients: selectedIngredients,
-            }
-        }
-        dispatch(addItemToCart(reqData))
+            },
+        };
+        dispatch(addItemToCart(reqData));
         console.log("reqData", reqData);
-
-       
-
-    }
-
+    };
 
     return (
         <Card
             sx={{
                 backgroundColor: theme.palette.background.paper,
                 color: theme.palette.text.primary,
-                border: `2px solid ${theme.palette.divider}`,
-                opacity: expanded ? 0.7 : 1,
-                position: 'relative',
-                overflow: 'hidden',
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: "12px",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                position: "relative",
+                overflow: "hidden",
+                transition: "transform 0.2s",
+                "&:hover": {
+                    transform: "scale(1.02)",
+                },
             }}
             onMouseEnter={handleExpandClick}
             onMouseLeave={handleExpandClick}
-            
         >
+            {/* Giảm giá nổi trên góc phải */}
+            {food.discount > 0 && (
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        backgroundColor: theme.palette.error.main,
+                        color: "white",
+                        padding: "5px 10px",
+                        borderRadius: "20px",
+                        fontWeight: "bold",
+                        fontSize: "0.8rem",
+                        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.2)",
+                    }}
+                >
+                    -{food.discount}%
+                </Box>
+            )}
+
             <CardMedia
                 component="img"
                 image={food.images[0]}
                 alt="Food dish"
                 sx={{
-                    width: '100%',
-                    height: '200px',
-                    objectFit: 'cover',
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
                 }}
             />
 
-            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <CardContent sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: theme.palette.text.primary }}>
+                    <Typography variant="h6" sx={{ fontWeight: "bold", color: theme.palette.text.primary }}>
                         {food.name}
+                    </Typography>
+                    <Typography variant="h6" sx={{  color: theme.palette.text.primary }}>
+                    {food.description}
                     </Typography>
                     {renderStars(food.rating)} {/* Hiển thị đánh giá sao */}
                 </Box>
-                <Typography variant="h6" sx={{ color: 'text.secondary', fontWeight: 'bold', marginLeft: '16px' }}>
+                <Typography
+                    variant="h6"
+                    sx={{
+                        color: theme.palette.text.secondary,
+                        fontWeight: "bold",
+                        marginLeft: "16px",
+                        textDecoration: food.discount > 0 ? "line-through" : "none",
+                        color:"red"
+                    }}
+                >
                     ${food.price}
                 </Typography>
+               
+                {food.discount > 0 && (
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            color: theme.palette.success.main,
+                            fontWeight: "bold",
+                            marginLeft: "16px",
+                        }}
+                    >
+                        ${(food.price - (food.price * food.discount) / 100).toFixed(2)}
+                    </Typography>
+                )}
             </CardContent>
 
-            <Box
-              onClick={handleAddItemToCart} 
+            <Button
+                fullWidth
+                variant="contained"
+                color="primary"
                 sx={{
-                    position: 'absolute',
-                    bottom: expanded ? '10px' : '-50px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    transition: 'bottom 0.7s ease, opacity 0.3s ease',
-                    backgroundColor: theme.palette.primary.main,
-                    color: theme.palette.common.white,
-                    padding: '12px 24px',
-                    borderRadius: '30px',
-                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                    opacity: 1, // Đặt opacity của nút thành 1
-                    pointerEvents: 'auto', // Để cho phép tương tác với nút
-                    cursor: 'pointer',
-                    zIndex: 10,
-                    fontSize: '16px',
+                    borderTopLeftRadius: 0,
+                    borderTopRightRadius: 0,
+                    textTransform: "none",
+                    fontWeight: "bold",
                 }}
-                
+                onClick={handleAddItemToCart}
             >
                 Add to Cart
-            </Box>
+            </Button>
         </Card>
     );
 };

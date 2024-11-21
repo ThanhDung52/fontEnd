@@ -105,7 +105,7 @@ const RestaurantDetail = () => {
             <section className="pt-[2rem] lg:flex relative lg:px-10">
                 <div className="space-y-10 lg:w-[20%] filter">
                     <div className="box space-y-5 lg:sticky top-28 p-5 shadow-md">
-                        {/* <div>
+                        <div>
                             <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
                                 Food Type
                             </Typography>
@@ -121,8 +121,8 @@ const RestaurantDetail = () => {
                                             label={item.label} />)}
                                 </RadioGroup>
                             </FormControl>
-                        </div> */}
-                        {/* <Divider/> */}
+                        </div>
+                        <Divider/>
                         <div>
                             <Typography variant="h5" sx={{ paddingBottom: "1rem" }}>
                                 Food Category

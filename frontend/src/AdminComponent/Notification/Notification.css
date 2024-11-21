@@ -10,47 +10,152 @@
     justify-content: center;
     align-items: center;
     z-index: 999;
-}
-
-/* Centered notification container */
-.notification {
-    background-color: #f0f0f0;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  /* Centered notification container */
+  .notification {
+    background-color: #ffffff;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 16px;
     color: #333;
     max-width: 400px;
     text-align: center;
     position: relative;
-}
-
-/* Notification success style */
-.notification.success {
-    background-color: #d4edda; /* Màu nền xanh thành công */
-    color: #155724; /* Màu chữ */
-}
-
-/* Notification error style */
-.notification.error {
-    background-color: #f8d7da; /* Màu nền đỏ khi có lỗi */
-    color: #721c24; /* Màu chữ */
-}
-
-/* Định dạng nút Close */
-.notification .close-button {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+    background-image: linear-gradient(white, white),
+      linear-gradient(to right, #4caf50, #81c784);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    opacity: 0;
+    animation: slideIn 0.5s forwards, glowEffect 1.5s ease-in-out infinite;
+  }
+  
+  /* Notification success style */
+  .notification.success {
+    border-color: #4caf50;
+  }
+  
+  /* Notification error style */
+  .notification.error {
+    border-color: #f44336;
+  }
+  
+  /* Định dạng nút Close */
+  .notification .close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
+    top: -10px;
+    right: -10px;
+    background: #fff;
     border: none;
-    font-size: 16px;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
     cursor: pointer;
-}
-
-/* Định dạng nội dung và biểu tượng */
-.notification .message-content {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+    animation: popIn 0.5s ease forwards;
+  }
+  
+  .notification .close-button:hover {
+    background: #f5f5f5;
+    transform: scale(1.1);
+  }
+  
+  /* Định dạng nội dung và biểu tượng */
+  .notification .message-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Chiếm toàn bộ chiều cao */
-}
+    gap: 10px;
+  }
+  
+  /* Checkmark icon style */
+  .notification .checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: scaleBounce 0.7s ease-out forwards;
+  }
+  
+  .notification .checkmark svg {
+    fill: white;
+    width: 40px;
+    height: 40px;
+    animation: spinIn 0.5s ease-out forwards;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes glowEffect {
+    0%, 100% {
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.8);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(76, 175, 80, 1);
+    }
+  }
+  
+  @keyframes popIn {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes scaleBounce {
+    0% {
+      transform: scale(0.8);
+    }
+    60% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes spinIn {
+    0% {
+      transform: rotate(-180deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  

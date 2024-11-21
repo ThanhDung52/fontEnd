@@ -147,7 +147,7 @@ export const Dashboard = () => {
                 </div>
             </div>
 
-            <div className="flex flex-row">
+            <div className="flex flex-row pt-2 py-2">
                 {Object.entries(groupedOrders).length > 0 ? (
                     Object.entries(groupedOrders).map(([restaurantName, { totalRevenue, monthlyRevenue }]) => (
                         <div className="basic 1/2 max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl" key={restaurantName}>

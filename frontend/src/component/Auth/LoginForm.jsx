@@ -3,7 +3,7 @@ import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LoginUser } from "../State/Authentition/Action";
+import { LoginUser, setUser, setUserInfo } from "../State/Authentition/Action";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from 'jwt-decode';
 import { api, API_URL } from "../Config/api"
@@ -23,40 +23,47 @@ export const LoginForm = () => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
 
- 
-const handleLoginSuccess = async (credentialResponse) => {
-    // const { credential } = credentialResponse;
 
-    // if (!credential) {
-    //     setMessage("Không thể lấy thông tin đăng nhập. Vui lòng thử lại.");
-    //     return;
-    // }
 
-    // localStorage.setItem("jwt", credential);
+  const handleLoginSuccess = async (credentialResponse) => {
+    const { credential } = credentialResponse;
 
-    // try {
-    //     const decodedToken = jwtDecode(credential);
-    //     const email = decodedToken.email;
-    //     const fullName = decodedToken.name; // Lấy tên đầy đủ từ token (nếu có)
-    //     const password = "defaultPassword"; // Hoặc để trống
+    if (!credential) {
+        setMessage("Không thể lấy thông tin đăng nhập. Vui lòng thử lại.");
+        return;
+    }
 
-    //     // Gửi yêu cầu tới server của bạn với email, tên đầy đủ và mật khẩu
-    //     const res = await axios.post(`${API_URL}auth/google/signin`, {
-    //         email: email,
-    //         fullName: fullName,
-    //         password: password, // Gửi mật khẩu (có thể là giá trị mặc định)
-    //     });
+    try {
+        const decodedToken = jwtDecode(credential);
+        const email = decodedToken.email;
+        const fullName = decodedToken.name;
 
-    //     if (res.status === 200) {
-    //         navigate("/");
-    //     } else {
-    //         setMessage(`Có lỗi xảy ra khi lưu email: ${res.data.message}`);
-    //     }
-    // } catch (error) {
-    //     console.error("Login failed:", error);
-    //     setMessage("Có lỗi xảy ra trong quá trình đăng nhập.");
-    // }
+        // Gửi yêu cầu tới server
+        const res = await axios.post(`${API_URL}auth/google/signin`, {
+            email: email,
+            fullName: fullName,
+        });
+
+        if (res.status === 200) {
+            const { jwt, user } = res.data; // Giả sử server trả về thông tin người dùng
+            localStorage.setItem("jwt", jwt);
+            
+            // Dispatch action để cập nhật thông tin người dùng
+            dispatch(setUser(user)); // Cập nhật thông tin người dùng từ phản hồi của server
+            
+            navigate("/"); // Chuyển hướng đến trang chủ
+            alert("Dang nhap thanh cong ")
+            window.location.reload();
+        } else {
+            setMessage(`Có lỗi xảy ra khi lưu email: ${res.data.message}`);
+        }
+    } catch (error) {
+        console.error("Login failed:", error);
+        setMessage("Có lỗi xảy ra trong quá trình đăng nhập.");
+    }
 };
+
+
 
   
   

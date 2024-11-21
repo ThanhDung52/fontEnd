@@ -1,5 +1,6 @@
 
 import { isPresentInFavorites } from "../../Config/logic";
+import { SET_USER_INFO } from "./Action";
 import { ADD_TO_FAVORITE_FAILURE, ADD_TO_FAVORITE_REQUEST, ADD_TO_FAVORITE_SUCCESS, DELETE_USER_FAILURE, DELETE_USER_REQUEST, DELETE_USER_SUCCESS, GET_ALL_USER_FAILURE, GET_ALL_USER_REQUEST, GET_ALL_USER_SUCCESS, GET_USER_FAILURE, GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType";
 
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
     jwt: null,
     favorites: [],
     success: null,
+    userInfo: null,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -60,7 +62,11 @@ export const authReducer = (state = initialState, action) => {
                     ? state.favorites.filter((item) => item.id !== action.payload.id)
                     : [action.payload, ...state.favorites],
             };
-
+            case 'SET_USER':
+                return {
+                    ...state,
+                    user: action.payload,
+                };
         case LOGOUT:
             return {
                 ...initialState, // Đặt lại trạng thái về mặc định khi đăng xuất

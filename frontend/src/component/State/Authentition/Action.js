@@ -159,3 +159,8 @@ export const DeleteUser = ({userId,jwt}) => async (dispatch) => {
         dispatch({ type: DELETE_USER_FAILURE, payload: error.response?.data || error.message });
     }
 }
+
+export const setUser = (userData) => ({
+    type: 'SET_USER',
+    payload: userData,
+});

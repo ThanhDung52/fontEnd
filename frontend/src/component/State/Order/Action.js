@@ -13,15 +13,12 @@ export const createOrder = (reqData) =>{
                     Authorization: `Bearer ${reqData.jwt}`
                 }
             })
-            if(data.payment_url){
-                window.location.href = data.payment_url;
-            }
+            // if(data.payment_url){
+            //     window.location.href = data.payment_url;
+            // }
             console.log("create order data", data);
-            
-
             dispatch({type:CREATE_ORDER_SUCCESS, payload:data})
         } catch (error) {
-            console.log("Sending token:", reqData.jwt);
             console.log("error create order data", error);
             dispatch({type:CREATE_ORDER_FAILURE, payload:error})
         }
