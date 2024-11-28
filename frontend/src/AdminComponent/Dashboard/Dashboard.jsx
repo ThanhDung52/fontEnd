@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import { useTheme } from '@mui/material';
 
 export const RestaurantDashboard = () => {
   let barChart, pieChart, lineChart;
+  const theme = useTheme(); // Lấy theme hiện tại
 
   const updateData = () => {
     document.getElementById('updateTime').textContent = new Date().toLocaleString();
@@ -159,7 +161,7 @@ export const RestaurantDashboard = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen"  style={{ color: theme.palette.text.secondary }}>
       <header className="flex justify-between items-center p-5 bg-gray-200 shadow-md">
         <h1 className="text-2xl text-gray-800">Thống kê bán hàng</h1>
         <p className="text-sm text-gray-600">Dữ liệu cập nhật vào: <span id="updateTime"></span></p>

@@ -18,3 +18,16 @@ export const getAllFood =() =>{
         }
     }
 }
+
+
+export const getTopOrderedFoods = (page, size) => async (dispatch) => {
+    try {
+        const response = await fetch(`http://localhost:8080/api/food/top-ordered-foods?page=${page}&size=${size}`);
+        const data = await response.json();
+        dispatch({ type: "SET_TOP_ORDERED_FOODS", payload: data });
+        console.log("Top Ordered Foods", data);
+    } catch (error) {
+        console.error("Failed to fetch top-ordered foods:", error);
+    }
+};
+

@@ -17,7 +17,9 @@ const Food = ({ food }) => {
         setExpanded(!expanded);
     };
 
-    useEffect(() => {}, [foods]);
+    useEffect(() => {
+
+    }, [dispatch]);
 
     const renderStars = (rating) => {
         return (
@@ -116,7 +118,7 @@ const Food = ({ food }) => {
                         color:"red"
                     }}
                 >
-                    ${food.price}
+                    {food.price} VNĐ
                 </Typography>
                
                 {food.discount > 0 && (

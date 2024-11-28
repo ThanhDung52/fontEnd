@@ -8,7 +8,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from 'jwt-decode';
 import { api, API_URL } from "../Config/api"
 import axios from "axios";
-
+import ResetPasswordForm from "./ResetPasswordForm"; // Import form quên mật khẩu
 
 
 
@@ -22,6 +22,8 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
+  const [isResetPassword, setIsResetPassword] = useState(false); // Trạng thái hiển thị form
+
 
 
 
@@ -79,6 +81,10 @@ export const LoginForm = () => {
 
   return (
     <div>
+      {isResetPassword ? (
+        <ResetPasswordForm onBack={() => setIsResetPassword(false)} /> // Hiển thị form quên mật khẩu
+      ) : (
+      <>
       <Typography variant="h5" className="text-center">
         Đăng nhập
       </Typography>
@@ -114,6 +120,15 @@ export const LoginForm = () => {
           </Button>
         </Form>
       </Formik>
+      <Typography
+            variant="body2"
+            align="center"
+            sx={{ mt: 3 }}
+            onClick={() => navigate("/account/reset") } // Chuyển sang form quên mật khẩu
+            style={{ cursor: "pointer", color: "#007BFF" }}
+          >
+            Quên mật khẩu?
+          </Typography>
       <Typography variant="body2" align="center" sx={{ mt: 3 }}>
         Chưa có tài khoản?
         <Button size="small" onClick={() => navigate("/account/register")}>
@@ -121,13 +136,15 @@ export const LoginForm = () => {
         </Button>
       </Typography>
       <div className="App">
-        <GoogleLogin
+        <GoogleLogin className="items-center"
           onSuccess={handleLoginSuccess}
           onError={handleLoginFailure}
           scope="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
           prompt="consent"
         />
       </div>
+      </>
+      )}
     </div>
   );
 };

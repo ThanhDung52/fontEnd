@@ -95,7 +95,7 @@
 // }
 
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./Home.css";
 import MultiItemCarousel from "./MultilitemCarousel";
 import RestaurantCart from "../Restaurant/RestaurantCart";
@@ -104,17 +104,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllRestaurantsAction } from "../State/Restaurant/Action";
 import { useNavigate } from "react-router-dom";
 import { findCart } from "../State/Cart/Action";
-import { getAllFood } from "../State/Food/Action";
+import { getAllFood, getTopOrderedFoods } from "../State/Food/Action";
 import Food from "./Food";
 import { useTheme } from "@mui/material";
 import { Category } from "./Category";
 import { Footer } from "./footer";
+import TopOrder from "./TopOrder";
+import { FaStar } from "react-icons/fa"; 
 
 export const Home = () => {
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
     const { restaurant, foods } = useSelector((store) => store);
     const theme = useTheme(); // Lấy theme hiện tại
+    
 
     useEffect(() => {
         dispatch(getAllFood());
@@ -124,11 +127,19 @@ export const Home = () => {
         dispatch(getAllRestaurantsAction(jwt));
     }, [jwt]);
 
-    // Lọc và sắp xếp danh sách món ăn mới
-    const newFoods = foods.foods
-        ?.filter((food) => food.available) // Lọc các món ăn khả dụng
-        .sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate)); // Sắp xếp theo ngày tạo
+    useEffect(() => {
+        dispatch(getTopOrderedFoods(0, 2));  // Truyền tham số trang và kích thước
+    }, [dispatch]);
+    console.log("toporder", foods.topOrderedFoods);
+    
 
+    // Lọc và sắp xếp danh sách món ăn mới
+    const newFoods = useMemo(() => {
+        return foods.foods
+           ?.filter((food) => food.name)
+           .sort((a, b) => new Date(b.creationDate) - new Date(a.creationDate));
+    }, [foods.foods]);
+    
     return (
         <div>
             <div className="pb-10">
@@ -143,8 +154,52 @@ export const Home = () => {
                         </p>
                     </div>
                 </section>
+                {/* <section className="p-10 lg:py-10 lg:px-20">
+                <h2 className="text-2xl font-semibold text-gray-400 py-3 pb-10">
+                    Món ăn được đặt nhiều nhất
+                </h2>
+                <div className="flex flex-wrap items-center justify-start gap-5">
+                    {foods.topOrderedFoods?.map((food) => (
+                        <TopOrder key={food.id} food={food} specialCard={true} />
+                    ))}
+                </div>
+            </section> */}
+ <section className="p-10 lg:py-10 lg:px-20">
+            <h2 className="text-2xl font-semibold text-gray-400 py-3 pb-10">
+                Món ăn được đặt nhiều nhất
+            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-5">
+                {foods.topOrderedFoods?.slice(0, 2).map((food) => (
+                    <div
+                        key={food.id}
+                        className="relative w-full sm:w-[48%] lg:w-[48%] h-64 rounded-lg overflow-hidden"
+                    >
+                        {/* Hình ảnh sản phẩm */}
+                        <img
+                            src={food.images}
+                            alt={food.name}
+                            className="w-full h-full object-cover"
+                        />
+                        
+                        {/* Biểu tượng ở góc trên bên phải */}
+                        <div className="absolute top-3 right-3 text-[#e91e63]">
+                            <FaStar size={40} />
+                        </div>
+
+                        {/* Chữ "Hoi" nổi trên ảnh */}
+                        <div
+                            className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50"
+                            style={{ borderRadius: "12px" }}
+                        >
+                            <h3 className="text-white text-2xl font-bold">{food.name}</h3>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
 
                  {/* Món ăn mới */}
+
                  <section className="p-10 lg:py-10 lg:px-20">
                     <h2
                         className="text-2xl font-semibold text-gray-400 py-3 pb-10"
@@ -153,9 +208,11 @@ export const Home = () => {
                         Món ăn mới nhất
                     </h2>
                     <div className="flex flex-wrap items-center justify-start gap-5">
-                        {newFoods.map((food) => (
+                        <div className="grid grid-cols-4 gap-5">
+                        {newFoods.slice(0, 4).map((food) => (
                             <Food key={food.id} food={food} />
                         ))}
+                        </div>                   
                     </div>
                 </section>
                 <section className="p-10 lg:py-5 lg:px-10">

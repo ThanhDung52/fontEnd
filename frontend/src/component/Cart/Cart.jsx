@@ -278,12 +278,12 @@ const Cart = () => {
   return (
     <div>
       <main className="lg:flex justify-between">
-        <section className="lg:w-[40%] space-y-6 lg:min-h-screen pt-10">
+        <section className="lg:w-[50%] space-y-6 lg:min-h-screen pt-10">
           {cart.cartItems.map((item) => (
             <CartItem key={item.id} item={item} />
           ))}
           <Divider />
-          <div className="billDetails px-5 py-4 shadow-md rounded-lg text-sm">
+          <div className="billDetails  px-5 py-4 shadow-md rounded-lg text-sm">
             <h2 className="font-semibold text-lg mb-2">Bill Details</h2>
             <div className="flex justify-between border-b py-2">
               <span>Item Total:</span>
@@ -320,7 +320,7 @@ const Cart = () => {
           </div>
         </section>
         <Divider orientation="vertical" flexItem />
-        <section className="lg:w-[60%] flex px-5 pb-10 lg:pb-0">
+        <section className="lg:w-[50%] flex px-5 pb-10 lg:pb-0">
           <Box
             sx={{
               maxWidth: "500px", // Maximum width for the form
@@ -331,7 +331,7 @@ const Cart = () => {
               borderRadius: "8px", // Optional: Rounded corners
               padding: "16px", // Optional: Inner padding
               boxShadow: 2, // Optional: Add a shadow for better visibility
-              height: "500px",
+              height: "550px",
               maxHeight: "100%",
             }}
           >
@@ -363,6 +363,7 @@ const Cart = () => {
                   >
                     <InputLabel>Province</InputLabel>
                     <Field
+                      label="Province"
                       name="stateProvince"
                       as={Select}
                       fullWidth
@@ -392,6 +393,7 @@ const Cart = () => {
                   >
                     <InputLabel>District</InputLabel>
                     <Field
+                    label="District"
                       name="district"
                       as={Select}
                       fullWidth
@@ -422,6 +424,7 @@ const Cart = () => {
                   >
                     <InputLabel>Ward</InputLabel>
                     <Field
+                    label="Ward"
                       name="ward"
                       as={Select}
                       fullWidth
@@ -447,8 +450,11 @@ const Cart = () => {
                     margin="normal"
                     style={{ minWidth: 120 }}
                   >
-                    <InputLabel>Payment Method</InputLabel>
-                    <Field name="paymentMethod" as={Select} fullWidth required>
+                    <InputLabel >Payment Method</InputLabel>
+                    <Field name="paymentMethod" 
+                    as={Select} fullWidth required
+                      label="Payment Method"
+                    >
                       <MenuItem value="cod">Thanh toán khi nhận hàng</MenuItem>
                       <MenuItem value="online">Thanh toán trực tuyến</MenuItem>
                     </Field>

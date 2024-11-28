@@ -3,6 +3,7 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginForm } from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import ResetPasswordForm from "./ResetPasswordForm";
 
 export const Auth = () => {
   const location = useLocation();
@@ -26,13 +27,11 @@ export const Auth = () => {
 
   return (
     <div>
-      <Modal
-        onClose={handleOnClose}
-        open={
-          location.pathname === "/account/register" ||
-          location.pathname === "/account/login"
-        }
-      >
+      <Modal onClose={handleOnClose} open={
+                location.pathname === "/account/register" ||
+                location.pathname === "/account/login" ||
+                location.pathname === "/account/reset"
+            }>
         <Box
           sx={{
             ...style,
@@ -53,7 +52,7 @@ export const Auth = () => {
             }}
           >
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGqfvTjri_uqHnLuYTb75WQNIXwPvBmpkCh_UZi3ETJ-Jf2ElPm-9q0TEmUqTURorvNys&usqp=CAU"
+              src="https://images.pexels.com/photos/2983103/pexels-photo-2983103.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="Illustration"
               style={{
                 width: "100%",
@@ -76,11 +75,11 @@ export const Auth = () => {
             }}
           >
             <div style={{ width: "100%" }}>
-              {location.pathname === "/account/register" ? (
-                <RegisterForm />
-              ) : (
-                <LoginForm />
-              )}
+            {
+                        location.pathname === "/account/register" ? <RegisterForm /> :
+                        location.pathname === "/account/login" ? <LoginForm /> :
+                        location.pathname === "/account/reset" ? <ResetPasswordForm /> : null
+                    }
             </div>
           </div>
         </Box>

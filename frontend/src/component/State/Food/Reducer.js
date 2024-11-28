@@ -8,6 +8,7 @@ const initialState = {
     loading: false,
     foods: [],  // Mảng chứa danh sách thực phẩm
     error: null,    // Biến để lưu lỗi
+    topOrderedFoods: [],
 };
 
 const foodReducer = (state = initialState, action) => {
@@ -23,6 +24,12 @@ const foodReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 foods: action.payload.data, // Giả sử dữ liệu thực phẩm nằm trong `data`
+            };
+        case "SET_TOP_ORDERED_FOODS":
+            return {
+                ...state,
+                loading: false,
+                topOrderedFoods: action.payload,  // Dữ liệu trực tiếp từ payload
             };
         case GET_ALL_FOOD_FAILURE:
             return {

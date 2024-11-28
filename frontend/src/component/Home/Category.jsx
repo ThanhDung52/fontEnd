@@ -47,7 +47,7 @@ export const Category = () => {
                 <ul className="flex flex-col gap-3">
                     <li
                         className={`cursor-pointer p-2 rounded-lg transition-colors ${
-                            isVegetarian === null ? "bg-blue-500 text-white" : "hover:bg-gray-100"
+                            isVegetarian === null ? "bg-pink-800 text-white" : "hover:bg-gray-100"
                         }`}
                         onClick={() => handleVegetarianFilter(null)}
                     >
@@ -55,7 +55,7 @@ export const Category = () => {
                     </li>
                     <li
                         className={`cursor-pointer p-2 rounded-lg transition-colors ${
-                            isVegetarian === "vegetarian" ? "bg-green-500 text-white" : "hover:bg-gray-100"
+                            isVegetarian === "vegetarian" ? "bg-pink-800 text-white" : "hover:bg-gray-100"
                         }`}
                         onClick={() => handleVegetarianFilter("vegetarian")}
                     >
@@ -63,7 +63,7 @@ export const Category = () => {
                     </li>
                     <li
                         className={`cursor-pointer p-2 rounded-lg transition-colors ${
-                            isVegetarian === "non-vegetarian" ? "bg-red-500 text-white" : "hover:bg-gray-100"
+                            isVegetarian === "non-vegetarian" ? "bg-pink-800 text-white" : "hover:bg-gray-100"
                         }`}
                         onClick={() => handleVegetarianFilter("non-vegetarian")}
                     >
@@ -101,7 +101,7 @@ export const Category = () => {
                 <h2 className="text-2xl font-semibold text-gray-400 py-3 pb-10">Danh sách món ăn</h2>
                 <div className="grid grid-cols-3 gap-5">
                     {filteredFoods.length > 0 ? (
-                        filteredFoods.map((food) => <Food key={food.id} food={food} />)
+                        filteredFoods.slice(0, 6).map((food) => <Food key={food.id} food={food} />)
                     ) : (
                         <p className="text-center col-span-3">Không có món ăn nào phù hợp.</p>
                     )}

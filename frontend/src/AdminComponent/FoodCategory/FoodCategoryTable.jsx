@@ -67,7 +67,7 @@ const handleDeleteCategoryFood=()=>{
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">
-                    {1}
+                    {item.id}
                   </TableCell>
                   <TableCell align="left">{item.name}</TableCell>
                   {/* <TableCell align="left">

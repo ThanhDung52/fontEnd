@@ -9,12 +9,13 @@ import { createMenuItem } from "../../component/State/Menu/Action";
 import { getIngredientOfRestaurant } from "../../component/State/Ingredients/Action";
 import Notification from "../Notification/Notification";
 import { useNavigate } from "react-router-dom";
+import { getAllCategory } from "../../component/State/Category/Action";
 
 const initialValues = {
     name: "",
     description: "",
     price: "",
-    category: "",
+   categoryId: "",
     restaurantId: "",
     vegetarian: true,
     seasonal: false,
@@ -25,7 +26,7 @@ const initialValues = {
 
 const CreateMenuForm = () => {
     const dispatch = useDispatch()
-    const {restaurant, ingredients,loading, error} = useSelector((store )=>store)
+    const {restaurant, ingredients,loading, error,categorys} = useSelector((store )=>store)
     const jwt = localStorage.getItem("jwt")
     const [uploadImage, setUploadImage] = useState(false)
     const [message, setMessage] = useState('');
@@ -35,26 +36,40 @@ const CreateMenuForm = () => {
     const formik = useFormik({
         initialValues,
         onSubmit: (values) => {
-            values.restaurantId = restaurant.userRestaurant.id
-            dispatch(createMenuItem({menu: values, jwt}))
-            console.log("data-----", values)
+            // Đảm bảo rằng restaurantId đã được thiết lập
+            if (!restaurant.userRestaurant?.id) {
+                setMessage("Restaurant ID is missing.");
+                setShowNotification(true);
+                return;
+            }
+            values.restaurantId = restaurant.userRestaurant.id;
 
-            
+            // Đảm bảo rằng categoryId được thiết lập đúng
+            if (!values.categoryId) {
+                setMessage("Category is required.");
+                setShowNotification(true);
+                return;
+            }
+
+           
+
+            // Gửi yêu cầu tạo menu
+            console.log("Submitting Values:", values); // Log giá trị để kiểm tra
+
+            // Dispatch action để tạo menu item
+            dispatch(createMenuItem({ menu: values, jwt }));
+
+            // Notification
             if (!error) {
                 setMessage("Thêm menu thành công");
                 setShowNotification(true);
-    
-                setTimeout(() => {
-                    setShowNotification(false);
-                    navigate("/admin/restaurants/menu")
-                }, 4000);
             } else {
                 setMessage("Thêm menu không thành công. Vui lòng thử lại.");
                 setShowNotification(true);
             }
-            
         }
-    })
+    });
+    
     const handleImageChange = async (e) => {
         const file = e.target.files[0]
         setUploadImage(true)
@@ -69,10 +84,16 @@ const CreateMenuForm = () => {
     }
 
 
-  useEffect(()=>{
-    dispatch(getIngredientOfRestaurant({jwt, id:restaurant.userRestaurant.id}))
-  },[])
-
+    useEffect(() => {
+        dispatch(getIngredientOfRestaurant({ jwt, id: restaurant.userRestaurant?.id }));
+        console.log("Restaurant data:", restaurant);
+    }, []);
+    
+    useEffect(() => {
+        dispatch(getAllCategory());
+        console.log("Category data:", categorys);
+    }, []);
+    
     return (
         <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
             <div className="lg:max-w-4xl">
@@ -165,18 +186,11 @@ const CreateMenuForm = () => {
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={formik.values.category}
-                                    label="Age"
-                                    onChange={formik.handleChange}
-                                    name="category"
-                                >
-                                    {restaurant.categories.map((item)=>
-                                <MenuItem value={item}>{item.name}</MenuItem>)}                            
-                                 
+                                <InputLabel id="category-label">Category</InputLabel>
+                                <Select labelId="category-label" id="categoryId" value={formik.values.categoryId} label="Category" onChange={e => formik.setFieldValue('categoryId', e.target.value)}>
+                                    {categorys.categorys.map((item) => (
+                                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
