@@ -265,7 +265,7 @@ const Cart = () => {
   
         // Xóa từng mục trong giỏ hàng sau khi tạo đơn hàng
         for (const item of items) {
-          // dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
+          dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
         }
       }
     } catch (error) {

@@ -67,7 +67,7 @@ export const Category = () => {
                         }`}
                         onClick={() => handleVegetarianFilter("non-vegetarian")}
                     >
-                        Món không chay
+                        Món mặn
                     </li>
                 </ul>
             </div>
