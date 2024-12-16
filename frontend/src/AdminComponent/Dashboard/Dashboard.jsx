@@ -13,6 +13,7 @@ export const RestaurantDashboard = () => {
   const { restaurant, restaurantOrder } = useSelector((store) => store);
   const jwt = localStorage.getItem("jwt");
   const [productStats, setProductStats] = useState([]);
+  
 
   const updateData = () => {
     document.getElementById("updateTime").textContent =
@@ -361,25 +362,31 @@ window.lineChartInstance = new Chart(lineCtx, {
         <div className="bg-white rounded-lg p-5 shadow-md">
           <h3 className="text-lg text-gray-800">Tổng Doanh Thu</h3>
           <span className="text-2xl font-bold text-gray-800">
-            ${totalRevenue}
+            {totalRevenue.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",} 
+            )} 
           </span>
           <p className="text-sm text-green-600">+10% so với tháng trước</p>
         </div>
         <div className="bg-white rounded-lg p-5 shadow-md">
           <h3 className="text-lg text-gray-800">Số Đơn Hàng</h3>
           <span className="text-2xl font-bold text-gray-800">
-            ${totalOrder}
+            {totalOrder}
           </span>
           <p className="text-sm text-green-600">+5% so với tháng trước</p>
         </div>
         <div className="bg-white rounded-lg p-5 shadow-md">
           <h3 className="text-lg text-gray-800">Lợi Nhuận</h3>
-          <span className="text-2xl font-bold text-gray-800">$12,000</span>
+          <span className="text-2xl font-bold text-gray-800"> {totalRevenue.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",} 
+            )} </span>
           <p className="text-sm text-green-600">+8% so với tháng trước</p>
         </div>
         <div className="bg-white rounded-lg p-5 shadow-md">
           <h3 className="text-lg text-gray-800">Khách Hàng Truy Cập</h3>
-          <span className="text-2xl font-bold text-gray-800">35,000</span>
+          <span className="text-2xl font-bold text-gray-800">350</span>
           <p className="text-sm text-green-600">+15% so với tháng trước</p>
         </div>
       </div>

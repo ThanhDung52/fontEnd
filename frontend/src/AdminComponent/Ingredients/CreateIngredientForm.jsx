@@ -46,12 +46,12 @@ export const CreateIngredientForm = () => {
     return (
         <div className="">
             <div className="p-5">
-                <h1 className="text-gray-400 text-center text-xl pb-10">Create Ingredient</h1>
+                <h1 className="text-gray-400 text-center text-xl pb-10">Thêm thành phần</h1>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <TextField fullWidth
                         id="name"
                         name="name"
-                        label="Name"
+                        label="Tên thành phần"
                         variant="outlined"
                         onChange={handleInputChange}
                         value={formData.name}
@@ -59,7 +59,7 @@ export const CreateIngredientForm = () => {
 
                     </TextField>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Danh mục</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -75,7 +75,7 @@ export const CreateIngredientForm = () => {
                         </Select>
                     </FormControl>
                     <Button variant="contained" type="submit" >
-                        create Ingredietn
+                        Thêm mới
                     </Button>
                     {showNotification && (
                         <Notification

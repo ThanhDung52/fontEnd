@@ -1,4 +1,4 @@
-import { Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField } from "@mui/material";
+import { Alert, Box, Button, Chip, CircularProgress, FormControl, Grid, IconButton, InputLabel, MenuItem, OutlinedInput, Select, Snackbar, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -32,13 +32,53 @@ const CreateMenuForm = () => {
     const [message, setMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
     const navigate = useNavigate()
+    const [notificationType, setNotificationType] = useState("successs")
     
+    // const formik = useFormik({
+    //     initialValues,
+    //     onSubmit: (values) => {
+    //         // Đảm bảo rằng restaurantId đã được thiết lập
+    //         if (!restaurant.userRestaurant?.id) {
+    //             setMessage("Restaurant ID is missing.");
+    //             setShowNotification(true);
+    //             return;
+    //         }
+    //         values.restaurantId = restaurant.userRestaurant.id;
+
+    //         // Đảm bảo rằng categoryId được thiết lập đúng
+    //         if (!values.categoryId) {
+    //             setMessage("Category is required.");
+    //             setShowNotification(true);
+    //             return;
+    //         }
+
+           
+
+    //         // Gửi yêu cầu tạo menu
+    //         // console.log("Submitting Values:", values); // Log giá trị để kiểm tra
+
+    //         // Dispatch action để tạo menu item
+    //         dispatch(createMenuItem({ menu: values, jwt }));
+
+    //         // Notification
+    //         if (!error) {
+    //             setMessage("Thêm menu thành công");
+    //             setShowNotification(true);
+    //         } else {
+    //             setMessage("Thêm menu không thành công. Vui lòng thử lại.");
+    //             setShowNotification(true);
+    //         }
+    //     }
+    // });
+    
+
     const formik = useFormik({
         initialValues,
         onSubmit: (values) => {
             // Đảm bảo rằng restaurantId đã được thiết lập
             if (!restaurant.userRestaurant?.id) {
-                setMessage("Restaurant ID is missing.");
+                setMessage("Thiếu ID nhà hàng.");
+                setNotificationType("error");
                 setShowNotification(true);
                 return;
             }
@@ -46,15 +86,14 @@ const CreateMenuForm = () => {
 
             // Đảm bảo rằng categoryId được thiết lập đúng
             if (!values.categoryId) {
-                setMessage("Category is required.");
+                setMessage("Danh mục là bắt buộc.");
+                setNotificationType("error");
                 setShowNotification(true);
                 return;
             }
 
-           
-
             // Gửi yêu cầu tạo menu
-            // console.log("Submitting Values:", values); // Log giá trị để kiểm tra
+            console.log("Đang gửi giá trị:", values); // Log giá trị để kiểm tra
 
             // Dispatch action để tạo menu item
             dispatch(createMenuItem({ menu: values, jwt }));
@@ -62,14 +101,17 @@ const CreateMenuForm = () => {
             // Notification
             if (!error) {
                 setMessage("Thêm menu thành công");
+                setNotificationType("success");
                 setShowNotification(true);
+                formik.resetForm(); // Reset form khi thành công
             } else {
                 setMessage("Thêm menu không thành công. Vui lòng thử lại.");
+                setNotificationType("error");
                 setShowNotification(true);
             }
         }
     });
-    
+
     const handleImageChange = async (e) => {
         const file = e.target.files[0]
         setUploadImage(true)
@@ -98,7 +140,7 @@ const CreateMenuForm = () => {
         <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
             <div className="lg:max-w-4xl">
                 <h1 className="font-bold text-2xl text-center py-2">
-                    Add New Menu
+                    Thêm món ăn mới
                 </h1>
                 <form onSubmit={formik.handleSubmit} className="space-y-4">
                     <Grid container spacing={2} >
@@ -152,7 +194,7 @@ const CreateMenuForm = () => {
                             <TextField fullWidth
                                 id="name"
                                 name="name"
-                                label="Name"
+                                label="Tên món ăn"
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.name}
@@ -164,7 +206,7 @@ const CreateMenuForm = () => {
                             <TextField fullWidth
                                 id="description"
                                 name="description"
-                                label="Description"
+                                label="Mô tả"
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.description}
@@ -176,7 +218,7 @@ const CreateMenuForm = () => {
                             <TextField fullWidth
                                 id="price"
                                 name="price"
-                                label="Price"
+                                label="Giá tiền"
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.price}
@@ -186,8 +228,8 @@ const CreateMenuForm = () => {
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="category-label">Category</InputLabel>
-                                <Select labelId="category-label" id="categoryId" value={formik.values.categoryId} label="Category" onChange={e => formik.setFieldValue('categoryId', e.target.value)}>
+                                <InputLabel id="category-label">Danh mục</InputLabel>
+                                <Select labelId="category-label" id="categoryId" value={formik.values.categoryId} label="Danh mục" onChange={e => formik.setFieldValue('categoryId', e.target.value)}>
                                     {categorys.categorys.map((item) => (
                                         <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                                     ))}
@@ -197,7 +239,7 @@ const CreateMenuForm = () => {
 
                         <Grid item xs={12}>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-multiple-chip-label">Ingredients</InputLabel>
+                                <InputLabel id="demo-multiple-chip-label">Thành phần</InputLabel>
                                 <Select
                                     labelId="demo-multiple-chip-label"
                                     id="demo-multiple-chip"
@@ -205,7 +247,7 @@ const CreateMenuForm = () => {
                                     multiple
                                     value={formik.values.ingredients}
                                     onChange={formik.handleChange}
-                                    input={<OutlinedInput id="select-multiple-chip" label="Ingredients" />}
+                                    input={<OutlinedInput id="select-multiple-chip" label="Thành phần" />}
                                     renderValue={(selected) => (
                                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                             {selected.map((value) => (
@@ -231,7 +273,7 @@ const CreateMenuForm = () => {
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Is Vegetarian</InputLabel>
+                                <InputLabel id="demo-simple-select-label">Món chay</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="vegetarian"
@@ -240,14 +282,14 @@ const CreateMenuForm = () => {
                                     onChange={formik.handleChange}
                                     name="vegetarian"
                                 >
-                                      <MenuItem value={true}>Yes</MenuItem>
-                                      <MenuItem value={false}>No</MenuItem>
+                                      <MenuItem value={true}>Có</MenuItem>
+                                      <MenuItem value={false}>Không</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Is seasonal</InputLabel>
+                                <InputLabel id="demo-simple-select-label">Theo mùa</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="seasonal"
@@ -256,22 +298,33 @@ const CreateMenuForm = () => {
                                     onChange={formik.handleChange}
                                     name="seasonal"
                                 >
-                                    <MenuItem value={true}>Yes</MenuItem>
-                                    <MenuItem value={false}>No</MenuItem>
+                                    <MenuItem value={true}>Có</MenuItem>
+                                    <MenuItem value={false}>Không</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
                     </Grid>
                     <Button variant="contained" color="primary" type="submit">
-                        Create Menu
+                       Tạo menu
                         </Button>
-                        {showNotification && (
-                        <Notification
-                            message={message}
-                            type={error ? "error" : "success"}
-                            onClose={() => setShowNotification(false)}
-                        />
-                    )}
+                       
+                        <Snackbar   
+                        open={showNotification}
+                        autoHideDuration={6000}
+                        onClose={() => setShowNotification(false)}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}  // Đưa thông báo vào giữa
+                    >
+                        <Alert 
+                            onClose={() => setShowNotification(false)} 
+                            severity={notificationType}
+                            sx={{
+                                fontSize: '1.25rem', // Tăng kích thước chữ
+                                padding: '15px',     // Tăng padding
+                            }}
+                        >
+                            {message}
+                        </Alert>
+                    </Snackbar>
                 </form>
             </div>
         </div >

@@ -37,14 +37,14 @@ useEffect(()=>{
           <IconButton onClick={handleOpen} aria-label="settings">
             <CreateIcon />
           </IconButton>
-        } title={"Ingredient Category"}sx={{pt:2, alignItems:"center"}}/>
+        } title={"Danh mục thành phần"}sx={{pt:2, alignItems:"center"}}/>
 
               <TableContainer component={Paper}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="left">Id</TableCell>
-            <TableCell align="left">Name</TableCell>
+            <TableCell align="left">Tên</TableCell>
           
           </TableRow>
         </TableHead>

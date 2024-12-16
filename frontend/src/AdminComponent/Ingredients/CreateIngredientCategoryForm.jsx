@@ -42,12 +42,12 @@ export const CreateIngredientCategoryForm = () => {
     return (
         <div className="">
             <div className="p-5">
-                <h1 className="text-gray-400 text-center text-xl pb-10">Create Ingredient Category</h1>
+                <h1 className="text-gray-400 text-center text-xl pb-10">Thêm mới danh mục thành phàn</h1>
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <TextField fullWidth
                         id="name"
                         name="name"
-                        label="Category"
+                        label="Danh mục"
                         variant="outlined"
                         onChange={handleInputChange}
                         value={formData.name}
@@ -55,7 +55,7 @@ export const CreateIngredientCategoryForm = () => {
 
                     </TextField>
                     <Button variant="contained" type="submit" >
-                        Create Category
+                        Thêm mới
                     </Button>
                     {showNotification && (
                         <Notification

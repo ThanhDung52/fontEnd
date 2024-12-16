@@ -32,7 +32,9 @@ export const Navbar = ({ darkMode, toggleDarkMode }) => {
   const handleAvatarClick = () => {
     if (auth.user && auth.user.role === "ROLE_CUSTOMER") {
       navigate("/my-profile");
-    } else {
+    } else if (auth.user && auth.user.role === "ROLE_ADMIN") {
+      navigate("/admins");
+    }else {
       navigate("/admin/restaurants");
     }
   };

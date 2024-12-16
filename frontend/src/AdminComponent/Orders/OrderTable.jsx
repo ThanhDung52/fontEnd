@@ -9,6 +9,8 @@ import {
   Menu,
   MenuItem,
   Paper,
+  Snackbar,
+  SnackbarContent,
   Table,
   TableBody,
   TableCell,
@@ -16,13 +18,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchRestaurantsOrder,
   updateOrderStatus,
 } from "../../component/State/Restaurant Order/Action";
-
+import { CheckCircle, Error, Info, Warning } from "@mui/icons-material";
 const orderStatus = [
   { label: "Đang chờ", value: "PENDING" },
   { label: "Hoàn thành", value: "COMPLETED" },
@@ -41,7 +43,9 @@ export default function OrderTable() {
   const dispatch = useDispatch();
   const { restaurant, restaurantOrder } = useSelector((store) => store);
   const jwt = localStorage.getItem("jwt");
-
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success"); // Loại thông báo (success, error, warning, info)
   const CustomChip = ({ label, color }) => (
     <Chip
       label={label}
@@ -79,10 +83,41 @@ export default function OrderTable() {
     }
   }, [restaurant.userRestaurant?.id, jwt, dispatch]);
 
+  // const handleUpdateOrder = (orderId, orderStatus) => {
+  //   dispatch(updateOrderStatus({ orderId, orderStatus, jwt }));
+  //   handleClose();
+  // };
   const handleUpdateOrder = (orderId, orderStatus) => {
     dispatch(updateOrderStatus({ orderId, orderStatus, jwt }));
     handleClose();
+
+    // Cập nhật trạng thái Snackbar khi cập nhật đơn hàng thành công
+    setSnackbarMessage("Cập nhật trạng thái đơn hàng thành công!");
+    setSnackbarSeverity("success");
+    setOpenSnackbar(true);
   };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
+  // Chọn icon theo loại thông báo
+  const renderSnackbarIcon = (severity) => {
+    switch (severity) {
+      case "success":
+        return <CheckCircle style={{ color: "#4caf50" }} />;
+      case "error":
+        return <Error style={{ color: "#f44336" }} />;
+      case "warning":
+        return <Warning style={{ color: "#ff9800" }} />;
+      case "info":
+        return <Info style={{ color: "#2196f3" }} />;
+      default:
+        return <Info style={{ color: "#2196f3" }} />;
+    }
+  };
+
+console.log("restaurantOrder", restaurantOrder);
 
   return (
     <Box>
@@ -100,10 +135,11 @@ export default function OrderTable() {
                 <TableCell align="right">Khách hàng</TableCell>
                 <TableCell align="right">Giá</TableCell>
                 <TableCell align="right">Tên</TableCell>
-                <TableCell align="right">Nguyên liệu</TableCell>
                 <TableCell align="right">Địa chỉ</TableCell>
+                <TableCell align="right">Thanh toán</TableCell>
                 <TableCell align="right">Trạng thái</TableCell>
                 <TableCell align="right">Cập nhật</TableCell>
+                
               </TableRow>
             </TableHead>
             <TableBody>
@@ -145,7 +181,7 @@ export default function OrderTable() {
                           <p>Không có sản phẩm nào</p>
                         )}
                       </TableCell>
-                      <TableCell align="right">
+                      {/* <TableCell align="right">
                         {item.items && item.items.length > 0 ? (
                           item.items.map((orderItem, itemIndex) => (
                             <div className="mt-2" key={itemIndex}>
@@ -168,7 +204,7 @@ export default function OrderTable() {
                         ) : (
                           <p>Không có sản phẩm nào</p>
                         )}
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell align="right">
                         {item.deliveryAddress
                           ? [
@@ -182,6 +218,9 @@ export default function OrderTable() {
                               .filter(Boolean) // Loại bỏ các phần tử null hoặc undefined
                               .join(", ") // Ghép các phần tử với dấu phẩy
                           : "Không có địa chỉ nào"}
+                      </TableCell>
+                      <TableCell align="right">
+                        {item.paymentStatus}
                       </TableCell>
                       <TableCell align="right">{item.orderStatus}</TableCell>
                       <TableCell align="right">
@@ -236,6 +275,31 @@ export default function OrderTable() {
           </Table>
         </TableContainer>
       </Card>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <SnackbarContent
+          style={{
+            backgroundColor: snackbarSeverity === "success"
+              ? "#4caf50"
+              : snackbarSeverity === "error"
+              ? "#f44336"
+              : snackbarSeverity === "warning"
+              ? "#ff9800"
+              : "#2196f3",
+            color: "#fff",
+          }}
+          message={
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {renderSnackbarIcon(snackbarSeverity)}
+              <span style={{ marginLeft: 8 }}>{snackbarMessage}</span>
+            </Box>
+          }
+        />
+      </Snackbar>
     </Box>
   );
 }

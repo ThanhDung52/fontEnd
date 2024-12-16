@@ -43,16 +43,16 @@ export default function IngredientTable() {
           <IconButton onClick={handleOpen} aria-label="settings">
             <CreateIcon />
           </IconButton>
-        } title={"Ingredient"}sx={{pt:2, alignItems:"center"}}/>
+        } title={"Thành phần"}sx={{pt:2, alignItems:"center"}}/>
 
               <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell align="left">Id</TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Category</TableCell>
-            <TableCell align="right">Avaibilty</TableCell>
+            <TableCell align="right">Tên thành phần</TableCell>
+            <TableCell align="right">Danh mục</TableCell>
+            <TableCell align="right">Tình trạng</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -68,7 +68,7 @@ export default function IngredientTable() {
               <TableCell align="right">{item.category?.name}</TableCell>
               <TableCell align="right">
                 <Button onClick={()=>handleUpdateStoke(item.id)}>
-                  {item.inStoke?"in_Stoke":"out_of_Stoke"}
+                  {item.inStoke?"Còn hàng":"Hết hàng"}
                 </Button>
               </TableCell>
             </TableRow>
