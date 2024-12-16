@@ -12,7 +12,7 @@ import {
   import { uploadImageToCloudinary } from "../util/UploadToCloud";
   import Notification from "../Notification/Notification";
   
-  const CreateFoodCategoryForm = () => {
+  const CreateFoodCategoryForm = ( { onCategoryAdded }) => {
     const { error } = useSelector((store) => store);
     const dispatch = useDispatch();
     const [message, setMessage] = useState("");
@@ -32,25 +32,30 @@ import {
         restaurantId: { id: formData.restaurantId },
         images: formData.images,
       };
-  
+    
       dispatch(
         createCategoryAction({
           reqData: data,
           jwt: localStorage.getItem("jwt"),
         })
-      );
-  
-      if (!error) {
+      )
+      .then(() => {
         setMessage("Tạo thành công");
-      } else {
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 2000);
+        onCategoryAdded(); // Callback để reload category list
+      })
+      .catch(() => {
         setMessage("Tạo không thành công. Vui lòng thử lại.");
-      }
-      setShowNotification(true);
-  
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 2000);
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 2000);
+      });
     };
+    
   
     const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -81,7 +86,7 @@ import {
     };
   
     return (
-      <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
+      <div className="py-10 px-5 lg:flex items-center justify-center">
         <div className="lg:max-w-4xl">
           <h1 className="font-bold text-2xl text-center py-2">
             Create Food Category

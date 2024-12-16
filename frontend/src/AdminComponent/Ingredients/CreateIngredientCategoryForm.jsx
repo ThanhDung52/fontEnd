@@ -17,7 +17,7 @@ export const CreateIngredientCategoryForm = () => {
     const handleSubmit = (e) => {
      e.preventDefault()
      const data = {name:formData.name, restaurantId: restaurant.userRestaurant.id}
-        console.log(formData);
+        // console.log(formData);
         
         dispatch(createIngredientCategory({data:data,jwt}))
         if (!error) {

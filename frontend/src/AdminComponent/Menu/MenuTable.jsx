@@ -28,7 +28,7 @@ export default function MenuTable() {
     }
   }, [restaurant.userRestaurant?.id, jwt, dispatch]);
 
-  console.log("menu", menu);
+  // console.log("menu", menu);
   const handleDeleteFood = (foodId) => {
 
     dispatch(deleteFoodAction({ foodId, jwt }))
@@ -70,7 +70,7 @@ export default function MenuTable() {
                   <TableCell align="right">{item.available ? "in_stock" : "out_of_stock"}</TableCell>
                   <TableCell align="right">
                     <IconButton color="primary" onClick={() => {
-                      console.log("Deleting food ID:", item.id); // Thêm log để kiểm tra giá trị
+                      // console.log("Deleting food ID:", item.id); // Thêm log để kiểm tra giá trị
                       handleDeleteFood(item.id);
                     }}>
                       <Delete />

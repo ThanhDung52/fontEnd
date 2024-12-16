@@ -26,9 +26,9 @@ export const RestaurantDashboard = () => {
     }
   }, [jwt, dispatch, restaurant.userRestaurant?.id]); // Cập nhật khi JWT hoặc ID nhà hàng thay đổi
 
-  console.log("restaurant", restaurant);
+  // console.log("restaurant", restaurant);
 
-  console.log("order restaurant ", restaurantOrder);
+  // console.log("order restaurant ", restaurantOrder);
 
   // // Tính tổng doanh thu từ các đơn hàng
   const totalRevenue =

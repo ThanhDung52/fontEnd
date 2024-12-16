@@ -57,7 +57,7 @@ const CreateRestaurantForm = () => {
         images: values.images, // Nếu values.images là một mảng
       };
 
-      console.log("data", data);
+      // console.log("data", data);
       dispacth(createRestaurant({ data, token: jwt }));
     },
   });

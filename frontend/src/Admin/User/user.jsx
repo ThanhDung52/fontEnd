@@ -25,7 +25,7 @@ export const User = () => {
   }, [dispatch, jwt]);
 
   useEffect(() => {
-    console.log("users", auth.users); // Kiểm tra người dùng
+    // console.log("users", auth.users); // Kiểm tra người dùng
   }, [auth.users]);
 
   const handleDeleteUser = (userId) => {
@@ -38,7 +38,7 @@ export const User = () => {
   };
 
   const currentUserId = auth?.user?.id;
-  console.log(currentUserId);
+  // console.log(currentUserId);
 
   return (
     <Box sx={{ marginTop: "2rem" }}>

@@ -29,7 +29,7 @@ export const createMenuItem = ({ menu, jwt }) => {
                         Authorization: `Bearer ${jwt}`
                     }
                 })
-            console.log("create menu", data);
+            // console.log("create menu", data);
             dispatch({type:CREATE_MENU_ITEMS_SUCCESS, payload:data})
         } catch (error) {
             console.log("error create menu", error);
@@ -48,7 +48,7 @@ export const getMenuItemsByRestaurantId = (reqData) =>{
                         Authorization:`Bearer ${reqData.jwt}`
                     }
                 })
-            console.log("get menu item by restaurant id", data);
+            // console.log("get menu item by restaurant id", data);
             dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, payload:data})
         } catch (error) {
             console.log("error get menu items by restaurant id request", error);
@@ -66,7 +66,7 @@ export const searchMenuItem = ({keyword, jwt}) =>{
                     Authorization:`Bearer ${jwt}`
                 }
             })
-            console.log("search menu items", data);
+            // console.log("search menu items", data);
             dispatch({type:SEARCH_MENU_ITEMS_SUCCESS, payload:data})
         } catch (error) {
             console.log("error search menu items");
@@ -105,7 +105,7 @@ export const updateMenuItemsAvailability =({foodId, jwt}) =>{
                     }
                 }
             )
-            console.log("update men items availability", data);
+            // console.log("update men items availability", data);
             dispatch({type:UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS, payload: data})
         } catch (error) {
             console.log("error update men items availability",error);

@@ -10,6 +10,10 @@ import {
   InputLabel,
   TextField,
   CircularProgress,
+  Grid,
+  Paper,
+  Typography,
+  Snackbar,
 } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,6 +81,7 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [shippingFee, setShippingFee] = useState(0);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -149,64 +154,7 @@ const Cart = () => {
     setFieldValue("wardName", selectedWard.WardName);
   };
 
-  // const handleSubmit = async (values) => {
-  //   if (cart.cartItems.length === 0) {
-  //     alert("Giỏ hàng trống.");
-  //     return;
-  //   }
-
-  //   const orderItems = cart.cartItems;
-  //   const groupedByRestaurant = orderItems.reduce((acc, item) => {
-  //     const restaurantId = item.food.restaurant.id;
-  //     if (!acc[restaurantId]) {
-  //       acc[restaurantId] = [];
-  //     }
-  //     acc[restaurantId].push(item);
-  //     return acc;
-  //   }, {});
-
-    
-
-  //   try {
-  //     for (const restaurantId of Object.keys(groupedByRestaurant)) {
-  //       const items = groupedByRestaurant[restaurantId];
-  //       const data = {
-  //         order: {
-  //           restaurantId,
-  //           deliveryAddress: {
-  //             fullname: auth.user?.fullname || "Unknown",
-  //             streetAddress: values.streetAddress,
-  //             stateProvince: values.stateProvince,
-  //             provinceName: values.provinceName,
-  //             districtName: values.districtName,
-  //             wardName: values.wardName,
-  //             postalCode: values.postalCode,
-  //             city: values.city,
-  //             country: values.country,
-  //           },
-  //           items: items.map((item) => ({
-  //             foodId: item.food.id,
-  //             quantity: item.quantity,
-  //             price: item.totalPrice,
-  //           })),
-  //         },
-  //         jwt: localStorage.getItem("jwt"),
-  //       };
-
-  //       dispatch(createOrder(data));
-
-  //       // Xóa từng mục trong giỏ hàng sau khi tạo đơn hàng
-  //       for (const item of items) {
-  //         // dispatch(removeCartItem({ cartItemId: item.id, jwt: auth.jwt || jwt }));
-  //       }
-  //     }
-
-  //     alert("Tất cả đơn hàng đã được tạo thành công.");
-  //   } catch (error) {
-  //     console.error("Có lỗi xảy ra trong quá trình thanh toán: ", error);
-  //     alert("Có lỗi xảy ra, vui lòng thử lại.");
-  //   }
-  // };
+ 
 
   const handleSubmit = async (values) => {
     if (cart.cartItems.length === 0) {
@@ -257,11 +205,17 @@ const Cart = () => {
   
         dispatch(createOrder(data));
   
-        if (values.paymentMethod === "online" && data.payment_url) {
-          window.location.href = data.payment_url; // Chuyển hướng thanh toán online
-        } else {
-          alert("Đơn hàng đã được tạo thành công.");
+        // if (values.paymentMethod === "online" && data.payment_url) {
+        //   window.location.href = data.payment_url; // Chuyển hướng thanh toán online
+        // } else {
+        //   alert("Đơn hàng đã được tạo thành công.");
+        // }
+        
+        if (values.paymentMethod === "cod") {
+          alert("Đơn hàng được tạo thành công")
         }
+        
+        
   
         // Xóa từng mục trong giỏ hàng sau khi tạo đơn hàng
         for (const item of items) {
@@ -276,225 +230,225 @@ const Cart = () => {
   
   
   return (
-    <div>
-      <main className="lg:flex justify-between">
-        <section className="lg:w-[50%] space-y-6 lg:min-h-screen pt-10">
-          {cart.cartItems.map((item) => (
-            <CartItem key={item.id} item={item} />
-          ))}
-          <Divider />
-          <div className="billDetails  px-5 py-4 shadow-md rounded-lg text-sm">
-            <h2 className="font-semibold text-lg mb-2">Bill Details</h2>
-            <div className="flex justify-between border-b py-2">
-              <span>Item Total:</span>
-              <span>
-                $
-                {cart.cartItems
-                  .reduce((total, item) => total + item.totalPrice, 0)
-                  .toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b py-2">
-              <span>Delivery Fee:</span>
-              <span>${shippingFee.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between border-b py-2">
-              <span>GST and Restaurant Charges:</span>
-              <span>$33.00</span>
-            </div>
-            <Divider className="my-2" />
-            <div className="flex justify-between font-bold text-lg py-2">
-              <span>Total Pay:</span>
-              <span>
-                $
-                {(
-                  cart.cartItems.reduce(
-                    (total, item) => total + item.totalPrice,
-                    0
-                  ) +
-                  shippingFee +
-                  33
-                ).toFixed(2)}
-              </span>
-            </div>
-          </div>
-        </section>
-        <Divider orientation="vertical" flexItem />
-        <section className="lg:w-[50%] flex px-5 pb-10 lg:pb-0">
-          <Box
-            sx={{
-              maxWidth: "500px", // Maximum width for the form
-              width: "100%",
-              margin: "0", // Remove margin to align left
-              display: "flex", // Use flexbox for alignment
-              flexDirection: "column", // Arrange children vertically
-              borderRadius: "8px", // Optional: Rounded corners
-              padding: "16px", // Optional: Inner padding
-              boxShadow: 2, // Optional: Add a shadow for better visibility
-              height: "550px",
-              maxHeight: "100%",
-            }}
-          >
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-            >
-              {({ isSubmitting, setFieldValue }) => (
-                <Form>
-                  <Field
-                    as={TextField}
-                    name="streetAddress"
-                    label="Street Address"
-                    fullWidth
-                    margin="normal"
-                    required
-                  />
-                  <ErrorMessage
-                    name="streetAddress"
-                    component="div"
-                    style={{ color: "red" }}
-                  />
-
-                  <FormControl
-                    fullWidth
-                    margin="normal"
-                    style={{ minWidth: 120 }}
-                  >
-                    <InputLabel>Province</InputLabel>
+    <div style={{ padding: "20px", backgroundColor: "#f8f8f8" }}>
+      <main>
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ padding: 2, boxShadow: 3, backgroundColor: "#fff" }}>
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{
+                  color: "#333",
+                  fontWeight: "bold",
+                  fontSize: "24px",
+                  textAlign: "center",
+                }}
+              >
+                Chi tiết giỏ hàng
+              </Typography>
+              {cart.cartItems.map((item) => (
+                <CartItem key={item.id} item={item} />
+              ))}
+              <Divider sx={{ marginY: 2 }} />
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>Tổng tiền sản phẩm:</span>
+                <span>
+                  {cart.cartItems
+                    .reduce((total, item) => total + item.totalPrice, 0)
+                    .toLocaleString()} VND
+                </span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>Phí vận chuyển:</span>
+                <span>{shippingFee.toLocaleString()} VND</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>Thuế và phụ phí nhà hàng:</span>
+                <span>{(33000).toLocaleString()} VND</span>
+              </div>
+              <Divider sx={{ marginY: 2 }} />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontWeight: "bold",
+                  color: "#ff5722",
+                }}
+              >
+                <span>Tổng thanh toán:</span>
+                <span>
+                  {(
+                    cart.cartItems.reduce((total, item) => total + item.totalPrice, 0) +
+                    shippingFee +
+                    33000
+                  ).toLocaleString()} VND
+                </span>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ padding: 3, boxShadow: 3, backgroundColor: "#fff" }}>
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{
+                  color: "#333",
+                  fontWeight: "bold",
+                  fontSize: "24px",
+                  textAlign: "center",
+                }}
+              >
+                Thông tin giao hàng
+              </Typography>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit}
+              >
+                {({ isSubmitting, setFieldValue }) => (
+                  <Form>
                     <Field
-                      label="Province"
-                      name="stateProvince"
-                      as={Select}
+as={TextField}
+                      name="streetAddress"
+                      label="Địa chỉ"
                       fullWidth
-                      onChange={(e) => handleProvinceChange(e, setFieldValue)}
+                      margin="normal"
                       required
-                    >
-                      {provinces.map((province) => (
-                        <MenuItem
-                          key={province.ProvinceID}
-                          value={province.ProvinceID}
-                        >
-                          {province.ProvinceName}
-                        </MenuItem>
-                      ))}
-                    </Field>
+                      sx={{
+                        borderRadius: "8px",
+                        backgroundColor: "#f1f1f1",
+                        "& .MuiInputBase-root": {
+                          borderRadius: "8px",
+                        },
+                      }}
+                    />
                     <ErrorMessage
-                      name="stateProvince"
+                      name="streetAddress"
                       component="div"
                       style={{ color: "red" }}
                     />
-                  </FormControl>
+                    <FormControl fullWidth margin="normal" required>
+                      <InputLabel>Thành phố/Tỉnh</InputLabel>
+                      <Field
+                        label="Thành phố/Tỉnh"
+                        name="stateProvince"
+                        as={Select}
+                        onChange={(e) => handleProvinceChange(e, setFieldValue)}
+                        sx={{
+                          borderRadius: "8px",
+                          backgroundColor: "#f1f1f1",
+                        }}
+                      >
+                        {provinces.map((province) => (
+                          <MenuItem key={province.ProvinceID} value={province.ProvinceID}>
+                            {province.ProvinceName}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    </FormControl>
 
-                  <FormControl
-                    fullWidth
-                    margin="normal"
-                    style={{ minWidth: 120 }}
-                  >
-                    <InputLabel>District</InputLabel>
+                    <FormControl fullWidth margin="normal" required>
+                      <InputLabel>Quận/Huyện</InputLabel>
+                      <Field
+                        label="Quận/Huyện"
+                        name="district"
+                        as={Select}
+                        onChange={(e) => handleDistrictChange(e, setFieldValue)}
+                        disabled={!districts.length}
+                        sx={{
+                          borderRadius: "8px",
+                          backgroundColor: "#f1f1f1",
+                        }}
+                      >
+                        {districts.map((district) => (
+                          <MenuItem key={district.DistrictID} value={district.DistrictID}>
+                            {district.DistrictName}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    </FormControl>
+
+                    <FormControl fullWidth margin="normal" required>
+                      <InputLabel>Phường/Xã</InputLabel>
+                      <Field
+                        label="Phường/Xã"
+                        name="ward"
+                        as={Select}
+                        onChange={(e) => handleWardChange(e, setFieldValue)}
+                        disabled={!wards.length}
+                        sx={{
+                          borderRadius: "8px",
+backgroundColor: "#f1f1f1",
+                        }}
+                      >
+                        {wards.map((ward) => (
+                          <MenuItem key={ward.WardCode} value={ward.WardCode}>
+                            {ward.WardName}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                    </FormControl>
+
+                    <FormControl fullWidth margin="normal" required>
+                      <InputLabel>Phương thức thanh toán</InputLabel>
+                      <Field as={Select} name="paymentMethod" fullWidth required label="phuong thuc thanh toan" sx={{ borderRadius: "8px", backgroundColor: "#f1f1f1" }}>
+                        <MenuItem value="cod">Thanh toán khi nhận hàng</MenuItem>
+                        <MenuItem value="online">Thanh toán trực tuyến</MenuItem>
+                      </Field>
+                    </FormControl>
+
                     <Field
-                    label="District"
-                      name="district"
-                      as={Select}
+                      as={TextField}
+                      name="postalCode"
+                      label="Mã bưu điện"
                       fullWidth
-                      onChange={(e) => handleDistrictChange(e, setFieldValue)}
-                      disabled={!districts.length}
+                      margin="normal"
                       required
-                    >
-                      {districts.map((district) => (
-                        <MenuItem
-                          key={district.DistrictID}
-                          value={district.DistrictID}
-                        >
-                          {district.DistrictName}
-                        </MenuItem>
-                      ))}
-                    </Field>
+                      sx={{
+                        borderRadius: "8px",
+                        backgroundColor: "#f1f1f1",
+                        "& .MuiInputBase-root": {
+                          borderRadius: "8px",
+                        },
+                      }}
+                    />
                     <ErrorMessage
-                      name="district"
+                      name="postalCode"
                       component="div"
                       style={{ color: "red" }}
                     />
-                  </FormControl>
-
-                  <FormControl
-                    fullWidth
-                    margin="normal"
-                    style={{ minWidth: 120 }}
-                  >
-                    <InputLabel>Ward</InputLabel>
-                    <Field
-                    label="Ward"
-                      name="ward"
-                      as={Select}
+                    <Button
+                      type="submit"
+                      variant="contained"
                       fullWidth
-                      onChange={(e) => handleWardChange(e, setFieldValue)}
-                      disabled={!wards.length}
-                      required
+                      disabled={isSubmitting || isLoading}
+                      sx={{
+                        marginTop: 2,
+                        backgroundColor: "#ff5722",
+                        "&:hover": {
+                          backgroundColor: "#e64a19",
+                        },
+                      }}
                     >
-                      {wards.map((ward) => (
-                        <MenuItem key={ward.WardCode} value={ward.WardCode}>
-                          {ward.WardName}
-                        </MenuItem>
-                      ))}
-                    </Field>
-                    <ErrorMessage
-                      name="ward"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </FormControl>
-
-                  <FormControl
-                    fullWidth
-                    margin="normal"
-                    style={{ minWidth: 120 }}
-                  >
-                    <InputLabel >Payment Method</InputLabel>
-                    <Field name="paymentMethod" 
-                    as={Select} fullWidth required
-                      label="Payment Method"
-                    >
-                      <MenuItem value="cod">Thanh toán khi nhận hàng</MenuItem>
-                      <MenuItem value="online">Thanh toán trực tuyến</MenuItem>
-                    </Field>
-                    <ErrorMessage
-                      name="paymentMethod"
-                      component="div"
-                      style={{ color: "red" }}
-                    />
-                  </FormControl>
-
-                  <Field
-                    as={TextField}
-                    name="postalCode"
-                    label="Postal Code"
-                    fullWidth
-                    margin="normal"
-                    required
-                  />
-                  <ErrorMessage
-                    name="postalCode"
-                    component="div"
-                    style={{ color: "red" }}
-                  />
-
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={isSubmitting || isLoading}
-                  >
-                    {isLoading ? <CircularProgress size={24} /> : "Checkout"}
-                  </Button>
-                  {error && <div style={{ color: "red" }}>{error}</div>}
-                </Form>
-              )}
-            </Formik>
-
-            
-          </Box>
-        </section>
+                      {isLoading ? <CircularProgress size={24} /> : "Thanh toán"}
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
+            </Paper>
+          </Grid>
+        </Grid>
       </main>
+      
+      <Snackbar
+  open={snackbarOpen}
+  autoHideDuration={6000}
+  onClose={() => setSnackbarOpen(false)}
+  message="Đơn hàng đã được tạo thành công!"
+  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+/>
+
     </div>
   );
 };

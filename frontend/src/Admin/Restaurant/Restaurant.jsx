@@ -15,7 +15,7 @@ export const Restaurant = () => {
     }, [jwt, dispatch]);
 
     useEffect(() => {
-        console.log("users", restaurant.id); // Kiểm tra người dùng
+        // console.log("users", restaurant.id); // Kiểm tra người dùng
     }, [restaurant.id]);
 
     return (

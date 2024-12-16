@@ -15,11 +15,11 @@ export const Dashboard = () => {
         dispatch(getrestaurantrevenue(jwt));
     }, [jwt, dispatch]);
 
-    console.log("restaurantrevenue", restaurant);
+    // console.log("restaurantrevenue", restaurant);
 
     // Kiểm tra restaurant có dữ liệu doanh thu
     const restaurantData = restaurant.restaurantRevenues || []; // Giả định rằng dữ liệu doanh thu là một mảng
-    console.log("restaurantData", restaurantData);
+    // console.log("restaurantData", restaurantData);
 
     const handleMonthChange = (event) => {
         setSelectedMonth(event.target.value);

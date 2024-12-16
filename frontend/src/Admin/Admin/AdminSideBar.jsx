@@ -4,18 +4,20 @@ import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Router, useNavigate } from "react-router-dom";
-import { Divider, Drawer, IconButton, useMediaQuery } from "@mui/material";
+import { Divider, Drawer, IconButton, patch, useMediaQuery } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logout } from "../../component/State/Authentition/Action";
 import { Flag } from "@mui/icons-material";
 import { Dashboard, ShoppingBag,Menu as MenuIcon } from "@mui/icons-material";
-
+import CategoryIcon from '@mui/icons-material/Category';
 
 const menu = [
     {title: "Quản lý doanh thu", icon: <AccountBalanceWalletIcon/>, path:"/"},
     {title: "Quản lý nhà hàng", icon: <RestaurantMenuIcon/>, path:"/restaurant"},
     {title: "Quản lý khách hàng", icon: <PeopleAltIcon/>, path:"/custommer"},
+    {title:"Quản lý loại sản phẩm", icon: <CategoryIcon />, path:"/category" },
     {title: "Đăng xuất", icon: <LogoutIcon/> , path:"/"},
+  
 ]
 
 export const AdminSideBar = ({handleColse}) =>{

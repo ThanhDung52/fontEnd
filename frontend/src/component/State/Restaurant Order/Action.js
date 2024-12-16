@@ -14,7 +14,7 @@ export const updateOrderStatus = ({orderId, orderStatus, jwt}) =>{
                 }
                 )
                 const updateOrder = reponse.data;
-                console.log("update order", updateOrder);
+                // console.log("update order", updateOrder);
                 dispatch({type:UPDATE_ORDER_STATUS_SUCCESS, payload:updateOrder})
         } catch (error) {
             console.log("error update order");
@@ -34,7 +34,7 @@ export const fetchRestaurantsOrder = ({restaurantId, orderStatus, jwt}) =>{
                 }
             })
             const orders = data;
-            console.log("restaurant order",orders);
+            // console.log("restaurant order",orders);
             dispatch({type:GET_RESTAURANTS_ORDER_SUCCESS, payload:orders})
         } catch (error) {
             console.log("error restaurant order", error);

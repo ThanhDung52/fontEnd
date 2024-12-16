@@ -32,13 +32,13 @@ const RestaurantDetail = () => {
 
     const handleFilter = (e) =>{
         setFoodType(e.target.value)
-        console.log(e.target.value, e.target.name);
+        // console.log(e.target.value, e.target.name);
     }
     const handleFilterCategory = (e,value) =>{
         setSelectedCategory(value)
         console.log(e.target.value, e.target.name,value);
     }
-    console.log("restaurant", restaurant);
+    // console.log("restaurant", restaurant);
     
         
     useEffect (()=>{

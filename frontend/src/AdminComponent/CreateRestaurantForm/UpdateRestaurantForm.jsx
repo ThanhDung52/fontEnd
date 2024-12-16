@@ -69,7 +69,7 @@ const UpdateRestaurantForm = ({ restaurantData, onUpdateSuccess }) => {
         images: values.images, // Nếu values.images là một mảng
       };
 
-      console.log("data_update", data);
+      // console.log("data_update", data);
       dispacth(
         updateRestaurant({
           restaurantId: restaurant.userRestaurant.id,
@@ -110,7 +110,9 @@ const UpdateRestaurantForm = ({ restaurantData, onUpdateSuccess }) => {
 
   return (
     <div>
-      <div className="lg:max-w-4xl">
+      <div className="max-w-full lg:max-w-4xl mx-auto p-4 w-auto"
+        style={{ maxHeight: "90vh", overflowY: "auto" }}
+      >
         <h1 className="font-bold text-2xl text-center py-2">
           Update Restaurant
         </h1>
@@ -121,7 +123,8 @@ const UpdateRestaurantForm = ({ restaurantData, onUpdateSuccess }) => {
             top: 0,
             right: 0,
             outline: "none",
-            margin: "40px",
+            
+            marginLeft:"200px"
           }}
           onClick={() => onUpdateSuccess()}
         >

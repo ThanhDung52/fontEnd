@@ -54,7 +54,7 @@ const CreateMenuForm = () => {
            
 
             // Gửi yêu cầu tạo menu
-            console.log("Submitting Values:", values); // Log giá trị để kiểm tra
+            // console.log("Submitting Values:", values); // Log giá trị để kiểm tra
 
             // Dispatch action để tạo menu item
             dispatch(createMenuItem({ menu: values, jwt }));
@@ -86,12 +86,12 @@ const CreateMenuForm = () => {
 
     useEffect(() => {
         dispatch(getIngredientOfRestaurant({ jwt, id: restaurant.userRestaurant?.id }));
-        console.log("Restaurant data:", restaurant);
+        // console.log("Restaurant data:", restaurant);
     }, []);
     
     useEffect(() => {
         dispatch(getAllCategory());
-        console.log("Category data:", categorys);
+        // console.log("Category data:", categorys);
     }, []);
     
     return (

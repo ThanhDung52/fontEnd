@@ -20,8 +20,10 @@ function App() {
     const jwt = localStorage.getItem("jwt");
     const { auth } = useSelector(store => store);
     const location = useLocation();
-    const [darkMode, setDarkMode] = useState(false); // State quản lý chế độ sáng/tối
-
+    const [darkMode, setDarkMode] = useState(() => {
+        const savedTheme = localStorage.getItem('darkMode');
+        return savedTheme ? savedTheme === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    });
     // Toggle chức năng chuyển chế độ
     const handleThemeChange = () => {
         const newDarkMode = !darkMode;

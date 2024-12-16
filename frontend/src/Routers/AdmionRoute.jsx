@@ -8,7 +8,7 @@ import { CssBaseline } from "@mui/material";
 
 export const AdminRoute = () => {
     const  {restaurant}= useSelector(store => store);
-    console.log("UserRestaurant", restaurant.userRestaurant);
+    // console.log("UserRestaurant", restaurant.userRestaurant);
     
     
 

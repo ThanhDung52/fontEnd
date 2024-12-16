@@ -20,7 +20,7 @@ export const CreateIngredientForm = () => {
             restaurantId: restaurant.userRestaurant.id
         }
         dispatch(createIngredient({ data, jwt }))
-        console.log("FoodCategory Data", data);
+        // console.log("FoodCategory Data", data);
 
 
         if (!error) {

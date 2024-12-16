@@ -10,7 +10,7 @@ return async (dispatch) =>{
                 Authorization: `Bearer ${jwt}`
             }
         })
-        console.log("get all ingredients", response.data);
+        // console.log("get all ingredients", response.data);
         dispatch({type:GET_INGREDIENTS, payload:response.data})
     } catch (error) {
         console.log("error get all ingredients", error);
@@ -27,7 +27,7 @@ export const createIngredientCategory = ({data, jwt}) =>{
                     Authorization:`Bearer ${jwt}`
                 }
             })
-            console.log("create ingredient category", reponse.data);
+            // console.log("create ingredient category", reponse.data);
             dispatch({type:CREATE_INGREDIENT_CATEGORY_SUCCESS, payload:reponse.data})
         } catch (error) {
             console.log("error", error);
@@ -43,7 +43,7 @@ export const createIngredient = ({data, jwt}) =>{
                     Authorization: `Bearer ${jwt}`
                 }
             })
-            console.log("create ingredients", response.data);
+            // console.log("create ingredients", response.data);
             dispatch({type:CREATE_INGREDIENT_SUCCESS, payload: response.data})
         } catch (error) {
             console.log("error create ingredients", error);
@@ -59,7 +59,7 @@ export const getIngredientCategory =({id, jwt}) =>{
                     Authorization: `Bearer ${jwt}`
                 }
             })
-            console.log("get ingredients category", response.data);
+            // console.log("get ingredients category", response.data);
             dispatch({type:GET_INGREDIENT_CATEGORY_SUCCESS, payload: response.data})
         } catch (error) {
             console.log("error get ingredients category", error);           
@@ -76,7 +76,7 @@ export const updateStockOfIngredient = ({id, jwt}) =>{
                 }
             })
             dispatch({type:UPDATE_STOCK, payload: data})
-            console.log("update ingredients stock", data);
+            // console.log("update ingredients stock", data);
         } catch (error) {
             console.log("error update ingredients stock", error);
             

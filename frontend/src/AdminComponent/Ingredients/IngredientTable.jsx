@@ -34,7 +34,7 @@ export default function IngredientTable() {
   const handleUpdateStoke = (id) =>{
     dispatch(updateStockOfIngredient({id, jwt}))
   }
-  console.log(ingredients);
+  // console.log(ingredients);
   
     return(
         <Box>

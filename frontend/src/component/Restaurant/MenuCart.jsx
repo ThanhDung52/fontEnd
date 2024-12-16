@@ -28,7 +28,7 @@ const MenuCart = ({ item }) => {
 
 
     const handleCheckBoxChange = (itemName) => {
-        console.log("value", itemName);
+        // console.log("value", itemName);
 
         if (selectedIngredients.includes(itemName)) {
             setselectrdIngredients(selectedIngredients.filter((item) => item !== itemName))
@@ -49,7 +49,7 @@ const MenuCart = ({ item }) => {
             }
         }
         dispatch(addItemToCart(reqData))
-        console.log("reqData", reqData);
+        // console.log("reqData", reqData);
 
         if (!error) {
             setMessage("Thêm giỏ hàng thành công");

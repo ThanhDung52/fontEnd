@@ -19,7 +19,7 @@ export const registerUser = (reqData) => async (dispatch) => {
             reqData.navigate("/")
         }
         dispatch({ type: REGISTER_SUCCESS, payload: data.jwt })
-        console.log("register success", data);
+        // console.log("register success", data);
     } catch (error) {
         dispatch({ type: REGISTER_FAILURE, payload: error })
         console.log("error", error);
@@ -36,7 +36,7 @@ export const LoginUser = (reqData) => async (dispatch) => {
 
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt);
-            console.log("JWT lưu thành công:", data.jwt);
+            // console.log("JWT lưu thành công:", data.jwt);
         } else {
             throw new Error("No JWT received");
         }
@@ -51,7 +51,7 @@ export const LoginUser = (reqData) => async (dispatch) => {
         }
 
         dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
-        console.log("Login success", data);
+        // console.log("Login success", data);
     } catch (error) {
         console.error("Login error:", error.response ? error.response.data : error.message);
         dispatch({ type: LOGIN_FAILURE, payload: error.response ? error.response.data : error.message });
@@ -72,7 +72,7 @@ export const getUser = (jwt) => async (dispatch) => {
         })
 
         dispatch({ type: GET_USER_SUCCESS, payload: data })
-        console.log("user profile", data);
+        // console.log("user profile", data);
 
     } catch (error) {
         dispatch({ type: GET_USER_FAILURE, payload: error })
@@ -90,7 +90,7 @@ export const GetALLUser = (jwt) => async (dispatch) =>{
             }
         })
         dispatch({type:GET_ALL_USER_SUCCESS,payload:data})
-        console.log("data all user", data);
+        // console.log("data all user", data);
     } catch (error) {
         console.log("Error all users",error);
         dispatch({type:GET_ALL_USER_FAILURE, payload: error})
@@ -108,7 +108,7 @@ export const addToFavorite = ({ jwt, restaurantId }) => async (dispatch) => {
             }
         })
         dispatch({ type: ADD_TO_FAVORITE_SUCCESS, payload: data })
-        console.log("Add to favorite", data);
+        // console.log("Add to favorite", data);
 
     } catch (error) {
         dispatch({ type: ADD_TO_FAVORITE_FAILURE, payload: error })
@@ -147,7 +147,7 @@ export const DeleteUser = ({userId,jwt}) => async (dispatch) => {
             }
         });
 
-        console.log("User deleted:", res.data);
+        // console.log("User deleted:", res.data);
 
         // Giả định rằng res.data chứa thông tin bạn cần cho payload
         dispatch({ type: DELETE_USER_SUCCESS, payload: userId });
