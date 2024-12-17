@@ -180,7 +180,7 @@ const Food = ({ food }) => {
           }}
           onClick={handleAddItemToCart}
         >
-          Add to Cart
+          Thêm vào giỏ hàng
         </Button>
       </Card>
 

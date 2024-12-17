@@ -1,4 +1,5 @@
-import { GET_CATEGORY_LAILURE, GET_CATEGORY_REQUEST, GET_CATEGORY_SUCCESS } from "./ActionType"
+import { Category } from "@mui/icons-material"
+import { DELETE_CATEGORY_SUCCESS, GET_CATEGORY_LAILURE, GET_CATEGORY_REQUEST, GET_CATEGORY_SUCCESS } from "./ActionType"
 
 const initialState = {
     loading:false,
@@ -19,6 +20,14 @@ const categoryReducer = (state = initialState, action) =>{
                 ...state,
                 loading:false,
                 categorys:action.payload.data
+            }
+        case DELETE_CATEGORY_SUCCESS:
+            return{
+                ...state,
+                loading:false,
+                categorys:state.categorys.filter(
+                    (category) => category.id != action.payload
+                )
             }
         case GET_CATEGORY_LAILURE:
             return{

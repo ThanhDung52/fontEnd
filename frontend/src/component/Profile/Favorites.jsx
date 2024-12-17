@@ -6,7 +6,7 @@ export const Favorites = () =>{
     const {auth} = useSelector(store => store)
     return(
         <div>
-            <h1 className="py-5 text-xl font-semibold text-center">My Favorites</h1>
+            <h1 className="py-5 text-xl font-semibold text-center">Yêu thích</h1>
             <div className="flex flex-wrap justify-center gap-4">
                 {auth.favorites.map((item)=><RestaurantCart item={item}/>)}
             </div>

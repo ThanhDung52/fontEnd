@@ -152,7 +152,7 @@ export const Orders = () => {
 
   return (
     <div className="flex items-center flex-col">
-      <h1 className="text-xl text-center py-7 font-semibold">My Orders</h1>
+      <h1 className="text-xl text-center py-7 font-semibold">Đơn hàng của bạn</h1>
 
       <div className="space-y-5 w-full lg:w-1/2">
         {Object.keys(groupedOrders).length > 0 ? (
@@ -199,7 +199,10 @@ export const Orders = () => {
                     </div>
                     <Typography variant="body2" className="text-gray-600">
                       Tổng số món: {totalItems} | Tổng giá trị:{" "}
-                      {totalAmount.toLocaleString()} VNĐ
+                      {totalAmount.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",} 
+            )} 
                     </Typography>
                   </div>
 

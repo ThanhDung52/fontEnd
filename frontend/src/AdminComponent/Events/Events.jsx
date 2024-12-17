@@ -71,7 +71,7 @@ export const Events = () => {
     };
     return (
         <div className="p-5">
-            <Button onClick={handleOpen} variant="contained">Create New Event</Button>
+            <Button onClick={handleOpen} variant="contained">Thêm sự kiện</Button>
             <Modal
                 open={open}
                 onClose={handleClose}

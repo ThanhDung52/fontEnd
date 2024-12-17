@@ -1,50 +1,49 @@
-import { Label } from "@mui/icons-material";
 import { Card, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import React, { useState } from "react";
 import OrderTable from "./OrderTable";
 
 const orderStatus = [
-    { value: "pending", label: "PENDING" },
-    { value: "Completed", label: "COMPLETED" },
-    { value: "All", label: "all" },
-]
+    { value: "PENDING", label: "Đang chờ" },
+    { value: "COMPLETED", label: "Hoàn thành" },
+    { value: "all", label: "Tất cả" },
+];
 
 export const Orders = () => {
-    const [ filterValue, setFilterValue ] = useState("all")
-    
+    const [filterValue, setFilterValue] = useState("all");
 
+    const handleFilter = (e) => {
+        const { value } = e.target;
+        setFilterValue(value);
+    };
 
-    const handleFilter = (e, value) => {
-        setFilterValue(e.target.name)
-        console.log(e.target.value,e.target.name,value);
-        
-    }
-   
- 
     return (
         <div className="px-2">
-            <Card className="p-5 ">
+            <Card className="p-5">
                 <Typography sx={{ paddingBottom: "1rem" }} variant="h5">
-                    Order Status
+                    Trạng thái đơn hàng
                 </Typography>
                 <FormControl>
                     <RadioGroup
-                     onChange={ handleFilter}
-                      row 
-                      name="orderStatus" 
-                      value={filterValue || "all"}
-                      >
-                        {orderStatus.map((item) => <FormControlLabel
-                            key={item.label}
-                            value={item.value}
-                            control={<Radio />}
-                            label={item.label}
-                            sx={{ color: "gray" }}
-                        />)}
+                        onChange={handleFilter}
+                        row
+                        name="orderStatus"
+                        value={filterValue}
+                    >
+                        {orderStatus.map((item) => (
+                            <FormControlLabel
+                                key={item.value}
+                                value={item.value}
+                                control={<Radio />}
+                                label={item.label}
+                                sx={{ color: "gray" }}
+                            />
+                        ))}
                     </RadioGroup>
                 </FormControl>
             </Card>
-            <OrderTable/>
+            <OrderTable filter={filterValue} />
         </div>
-    )
-}
+    );
+};
+
+export default Orders;

@@ -51,7 +51,7 @@ export const Navbar = ({ darkMode, toggleDarkMode }) => {
             className="logo font-semibold text-gray-300 text-2xl"
             onClick={() => navigate("/")}
           >
-            TTD food
+            404 food
           </li>
         </div>
       </div>

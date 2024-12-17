@@ -88,7 +88,7 @@ const UserProfile = () => {
                         onClick={() => handleNavigate({ title: "Logout" })}
                         sx={{ margin: "2rem 0rem" }}
                     >
-                        Logout
+                        Đăng xuất
                     </Button>
                 )}
             </div>

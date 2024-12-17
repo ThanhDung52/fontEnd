@@ -137,7 +137,6 @@
 //     </div>
 //   );
 // };
-
 import { Button, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
@@ -145,13 +144,13 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../State/Authentition/Action";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import { api, API_URL } from "../Config/api";
 import axios from "axios";
 import ResetPasswordForm from "./ResetPasswordForm"; // Import form quên mật khẩu
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify"; // Import Toastify
-import "react-toastify/dist/ReactToastify.css"; // Import CSS cho Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS cho Toastify
 
 // Initial form values
 const initialValues = {
@@ -191,7 +190,7 @@ export const LoginForm = () => {
         // Dispatch action để cập nhật thông tin người dùng
         dispatch(setUser(user)); // Cập nhật thông tin người dùng từ phản hồi của server
 
-        toast.success("Đăng nhập thành công!"); // Hiển thị thông báo thành công
+        // toast.success("Đăng nhập thành công!"); // Hiển thị thông báo thành công
 
         // Đợi một chút trước khi chuyển hướng
         setTimeout(() => {
@@ -217,6 +216,9 @@ export const LoginForm = () => {
   const handleSubmit = async (values) => {
     try {
       const res = await axios.post(`${API_URL}auth/signin`, values);
+      if (res.role === "ROLE_RESTAURANT_OWNER") {
+        values.navigate("/admin/restaurants")
+      }
 
       if (res.status === 200) {
         const { jwt, user } = res.data;
@@ -229,16 +231,14 @@ export const LoginForm = () => {
         setTimeout(() => {
           navigate("/"); // Chuyển hướng đến trang chủ
           window.location.reload(); // Tải lại trang (nếu cần)
-        }, 3000); // Delay 2 giây (2000ms) để người dùng có thời gian đọc thông báo
+        }, 0); // Delay 2 giây (2000ms) để người dùng có thời gian đọc thông báo
       } else {
         toast.error("Sai email hoặc mật khẩu. Vui lòng thử lại.");
       }
     } catch (error) {
       console.error("Login failed:", error);
       if (error.response) {
-        toast.error(
-          error.response.data.message || "Có lỗi xảy ra khi đăng nhập."
-        );
+        toast.error(error.response.data.message || "Có lỗi xảy ra khi đăng nhập.");
       } else {
         toast.error("Không thể kết nối tới máy chủ. Vui lòng thử lại.");
       }
@@ -292,9 +292,7 @@ export const LoginForm = () => {
                   type="password"
                   autoComplete="current-password"
                   error={!!errors.password && touched.password}
-                  helperText={
-                    errors.password && touched.password ? errors.password : ""
-                  }
+                  helperText={errors.password && touched.password ? errors.password : ""}
                 />
                 <Button
                   sx={{ mt: 2, padding: "1rem" }}
@@ -308,7 +306,7 @@ export const LoginForm = () => {
             )}
           </Formik>
           <Typography
-            variant="body2"
+variant="body2"
             align="center"
             sx={{ mt: 3 }}
             onClick={() => navigate("/account/reset")} // Chuyển sang form quên mật khẩu
@@ -323,8 +321,7 @@ export const LoginForm = () => {
             </Button>
           </Typography>
           <div className="App">
-            <GoogleLogin
-              className="items-center"
+            <GoogleLogin className="items-center"
               onSuccess={handleLoginSuccess}
               onError={handleLoginFailure}
               scope="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"

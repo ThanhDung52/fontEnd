@@ -57,7 +57,7 @@ const RestaurantCart = ({ item }) => {
                     size="small"
                     className="absolute top-2 left-2"
                     color={item.open ? "success" : "error"}
-                    label={item.open ? "open" : "closed"}
+                    label={item.open ? "Mở của" : "Đóng cửa"}
                 />
             </div>
             <div className="p-4 textPart flex flex-col w-full justify-between">

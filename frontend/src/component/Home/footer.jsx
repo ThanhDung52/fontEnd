@@ -7,7 +7,7 @@ export const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-logo">
-            <img src="/path-to-your-logo.png" alt="Cookpa Logo" />
+              {/* <img src="/path-to-your-logo.png" alt="Cookpa Logo" /> */}
             <p>&copy; 2024 Cookpa. All Rights Reserved.</p>
           </div>
 

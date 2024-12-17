@@ -70,7 +70,7 @@ export const RestaurantDetails = () => {
               onClick={handleRestaurantStatus}
               size="large"
             >
-              {restaurant.userRestaurant?.open ? "close" : "open"}
+              {restaurant.userRestaurant?.open ? "Đóng cửa" : "Mở cửa"}
             </Button>
           </div>
           <div>
@@ -81,7 +81,7 @@ export const RestaurantDetails = () => {
               variant="contained"
               size="large"
             >
-              Update
+              Cập nhật
             </Button>
           </div>
         </div>
@@ -94,7 +94,7 @@ export const RestaurantDetails = () => {
                     className="text-gray-300"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    Restaurant
+                    Nhà hàng
                   </span>
                 }
               />
@@ -105,7 +105,7 @@ export const RestaurantDetails = () => {
                       className="w-48"
                       style={{ color: theme.palette.text.secondary }}
                     >
-                      Owner
+                      Họ và tên
                     </p>
                     <p
                       className="text-gray-400"
@@ -124,7 +124,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">RestaurantName</p>
+                    <p className="w-48">Tên Nhà hàng</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -137,7 +137,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">Cuisine Type</p>
+                    <p className="w-48">Liên lạc</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -150,7 +150,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">Opening Hours</p>
+                    <p className="w-48">Giờ hoạt động</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -163,16 +163,16 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">Status</p>
+                    <p className="w-48">Trạng thái</p>
                     <p className="text-gray-400">
                       <span className="pr-5">-</span>
                       {restaurant.userRestaurant?.open ? (
                         <span className="px-5 py-2 rounded-full bg-green-400 text-gray-950">
-                          Open
+                          Mở của
                         </span>
                       ) : (
                         <span className="px-5 py-2 rounded-full bg-red-400 text-gray-950">
-                          Closed
+                          Đóng cửa
                         </span>
                       )}
                     </p>
@@ -190,7 +190,7 @@ export const RestaurantDetails = () => {
                     className="text-gray-300"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    Address
+                    Địa chỉ
                   </span>
                 }
               />
@@ -200,7 +200,7 @@ export const RestaurantDetails = () => {
                   style={{ color: theme.palette.text.secondary }}
                 >
                   <div className="flex">
-                    <p className="w-48">Country</p>
+                    <p className="w-48">Quốc gia</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -213,7 +213,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">City</p>
+                    <p className="w-48">Thành phố</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -226,20 +226,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">Postal code</p>
-                    <p
-                      className="text-gray-400"
-                      style={{ color: theme.palette.text.secondary }}
-                    >
-                      <span className="pr-5">-</span>
-                      {restaurant.userRestaurant?.address?.postalCode}
-                    </p>
-                  </div>
-                  <div
-                    className="flex"
-                    style={{ color: theme.palette.text.secondary }}
-                  >
-                    <p className="w-48">Street Address</p>
+                    <p className="w-48">Đường</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -248,6 +235,20 @@ export const RestaurantDetails = () => {
                       {restaurant.userRestaurant?.address?.streetAddress}
                     </p>
                   </div>
+                  <div
+                    className="flex"
+                    style={{ color: theme.palette.text.secondary }}
+                  >
+                    <p className="w-48">Mã bưu điện</p>
+                    <p
+                      className="text-gray-400"
+                      style={{ color: theme.palette.text.secondary }}
+                    >
+                      <span className="pr-5">-</span>
+                      {restaurant.userRestaurant?.address?.postalCode}
+                    </p>
+                  </div>
+                 
                 </div>
               </CardContent>
             </Card>
@@ -261,7 +262,7 @@ export const RestaurantDetails = () => {
                     className="text-gray-300"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    Contaxt
+                    Liên hệ
                   </span>
                 }
               />
@@ -284,7 +285,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">Mobile</p>
+                    <p className="w-48">Số điện thoại</p>
                     <p
                       className="text-gray-400"
                       style={{ color: theme.palette.text.secondary }}
@@ -297,7 +298,7 @@ export const RestaurantDetails = () => {
                     className="flex"
                     style={{ color: theme.palette.text.secondary }}
                   >
-                    <p className="w-48">Social</p>
+                    <p className="w-48">Truyền thông</p>
                     <div
                       className="flex text-gray-400 items-center pb-3 gap-5"
                       style={{ color: theme.palette.text.secondary }}

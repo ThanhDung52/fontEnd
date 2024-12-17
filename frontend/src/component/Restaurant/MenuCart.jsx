@@ -81,7 +81,7 @@ const MenuCart = ({ item }) => {
                             alt="" />
                         <div className="space-y-1 lg:space-y-5 lg:max-w-2xl">
                             <p className="font-semibold text-xl">{item.name}</p>
-                            <p>{item.price}</p>
+                            <p>{item.price} VNĐ</p>
                             <p className="text-gray-400">{item.description}</p>
                         </div>
                     </div>

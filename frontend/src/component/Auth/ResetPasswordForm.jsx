@@ -80,14 +80,21 @@ import { useNavigate } from "react-router-dom";
       setLoading(true);
       setMessage("");
       setError("");
-  
+    
+      // Kiểm tra nếu mật khẩu mới dưới 6 ký tự
+      if (newPassword.length < 6) {
+        setError("Mật khẩu mới phải chứa ít nhất 6 ký tự.");
+        setLoading(false);
+        return;
+      }
+    
       // Kiểm tra nếu mật khẩu mới và xác minh mật khẩu không khớp
       if (newPassword !== confirmPassword) {
         setError("Mật khẩu mới và xác minh mật khẩu không khớp.");
         setLoading(false);
         return;
       }
-  
+    
       try {
         // Gửi yêu cầu thay đổi mật khẩu tới backend
         const response = await axios.put(
@@ -97,10 +104,9 @@ import { useNavigate } from "react-router-dom";
             newPassword, // mật khẩu mới
           }
         );
-  
+    
         setMessage("Mật khẩu đã được thay đổi thành công!"); // Thông báo thành công
         setShowNewPasswordFields(false); // Ẩn các trường nhập mật khẩu mới sau khi thành công
-      
       } catch (err) {
         setError("Có lỗi xảy ra khi thay đổi mật khẩu. Vui lòng thử lại.");
       } finally {

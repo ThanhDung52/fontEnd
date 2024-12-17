@@ -61,12 +61,12 @@ export const Home = () => {
       <div className="pb-10">
         <section className="banner -z-50 relative flex flex-col justify-center items-center">
           <div className="w-[50vw] z-10 text-center">
-            <p className="text-2xl lg:text-6xl font-bold z-10 py-5">TTD Food</p>
+            <p className="text-2xl lg:text-6xl font-bold z-10 py-5">404 Food</p>
             <p
               className="z-10 text-gray-300 text-xl lg:text-4xl"
               style={{ color: theme.palette.text.secondary }}
             >
-              Taste the convenience: Food, Fast and Delivered.
+              Hãy nếm thử sự tiện lợi: Đồ ăn, Nhanh chóng và Giao hàng tận nơi.
             </p>
           </div>
         </section>
@@ -166,7 +166,7 @@ export const Home = () => {
             className="text-2xl font-semibold py-3"
             style={{ color: theme.palette.text.secondary }}
           >
-            Order From Our Handpicked Favorites
+            Danh sách nhà hàng
           </h1>
           <div className="flex flex-wrap items-center justify-center gap-5">
             {restaurant.restaurants.map((item) => (

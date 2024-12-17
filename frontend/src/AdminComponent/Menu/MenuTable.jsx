@@ -216,7 +216,10 @@ export default function MenuTable() {
                   <TableCell align="right">
                     {item.ingredientsItems?.map((ingredient) => <Chip key={ingredient.name} label={ingredient.name} />)}
                   </TableCell>
-                  <TableCell align="right">${item.price}</TableCell>
+                  <TableCell align="right">{item.price.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",} 
+            ) }</TableCell>
                   <TableCell align="right">{item.available ? "Hết hàng" : "Có sẵn" }</TableCell>
                   <TableCell align="right">
                     <IconButton color="primary" onClick={() => handleOpenDialog(item.id)}>

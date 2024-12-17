@@ -11,6 +11,8 @@ export const RestaurantCart = ({ item }) => {
     const jwt = localStorage.getItem("jwt");
     const theme = useTheme();
     const [showFullDescription, setShowFullDescription] = useState(false);
+const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [foodToDelete, setFoodToDelete] = useState(null);
 
     const renderStars = (rating) => {
         return (
@@ -61,7 +63,7 @@ export const RestaurantCart = ({ item }) => {
                             size="small"
                             className="absolute top-4 left-4"
                             color={item.open ? "success" : "error"}
-                            label={item.open ? "Open" : "Closed"}
+                            label={item.open ? "Mở cửa" : "Đóng cửa"}
                         />
                     </div>
                     <div className="flex flex-col w-full lg:w-2/3 ">

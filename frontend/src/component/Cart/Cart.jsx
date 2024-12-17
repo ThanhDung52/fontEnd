@@ -155,8 +155,13 @@ const Cart = () => {
   };
 
  
+  const login = localStorage.getItem("jwt")
 
   const handleSubmit = async (values) => {
+    if (login == null) {
+      alert("Bạn chưa đăng nhập"); 
+      return;
+    }
     if (cart.cartItems.length === 0) {
       alert("Giỏ hàng trống.");
       return;
@@ -401,7 +406,7 @@ backgroundColor: "#f1f1f1",
                     <Field
                       as={TextField}
                       name="postalCode"
-                      label="Mã bưu điện"
+                      label="Số điện thoại"
                       fullWidth
                       margin="normal"
                       required

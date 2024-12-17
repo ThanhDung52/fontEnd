@@ -10,70 +10,43 @@ import { getIngredientOfRestaurant } from "../../component/State/Ingredients/Act
 import Notification from "../Notification/Notification";
 import { useNavigate } from "react-router-dom";
 import { getAllCategory } from "../../component/State/Category/Action";
+import * as Yup from 'yup';
 
 const initialValues = {
     name: "",
     description: "",
     price: "",
-   categoryId: "",
+    categoryId: "",
     restaurantId: "",
     vegetarian: true,
     seasonal: false,
     ingredients: [],
     images: []
-}
+};
 
+// Xác thực dữ liệu trong form
+const validationSchema = Yup.object({
+    name: Yup.string()
+        .required("Tên món ăn là bắt buộc."),
+    price: Yup.number()
+        .typeError("Giá tiền phải là số hợp lệ.")
+        .positive("Giá tiền không thể là số âm.")
+        .required("Giá tiền là bắt buộc.")
+});
 
 const CreateMenuForm = () => {
-    const dispatch = useDispatch()
-    const {restaurant, ingredients,loading, error,categorys} = useSelector((store )=>store)
-    const jwt = localStorage.getItem("jwt")
-    const [uploadImage, setUploadImage] = useState(false)
+    const dispatch = useDispatch();
+    const { restaurant, ingredients, loading, error, categorys } = useSelector((store) => store);
+    const jwt = localStorage.getItem("jwt");
+    const [uploadImage, setUploadImage] = useState(false);
     const [message, setMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
-    const navigate = useNavigate()
-    const [notificationType, setNotificationType] = useState("successs")
-    
-    // const formik = useFormik({
-    //     initialValues,
-    //     onSubmit: (values) => {
-    //         // Đảm bảo rằng restaurantId đã được thiết lập
-    //         if (!restaurant.userRestaurant?.id) {
-    //             setMessage("Restaurant ID is missing.");
-    //             setShowNotification(true);
-    //             return;
-    //         }
-    //         values.restaurantId = restaurant.userRestaurant.id;
-
-    //         // Đảm bảo rằng categoryId được thiết lập đúng
-    //         if (!values.categoryId) {
-    //             setMessage("Category is required.");
-    //             setShowNotification(true);
-    //             return;
-    //         }
-
-           
-
-    //         // Gửi yêu cầu tạo menu
-    //         // console.log("Submitting Values:", values); // Log giá trị để kiểm tra
-
-    //         // Dispatch action để tạo menu item
-    //         dispatch(createMenuItem({ menu: values, jwt }));
-
-    //         // Notification
-    //         if (!error) {
-    //             setMessage("Thêm menu thành công");
-    //             setShowNotification(true);
-    //         } else {
-    //             setMessage("Thêm menu không thành công. Vui lòng thử lại.");
-    //             setShowNotification(true);
-    //         }
-    //     }
-    // });
-    
+    const navigate = useNavigate();
+    const [notificationType, setNotificationType] = useState("success");
 
     const formik = useFormik({
         initialValues,
+        validationSchema,
         onSubmit: (values) => {
             // Đảm bảo rằng restaurantId đã được thiết lập
             if (!restaurant.userRestaurant?.id) {
@@ -113,29 +86,27 @@ const CreateMenuForm = () => {
     });
 
     const handleImageChange = async (e) => {
-        const file = e.target.files[0]
-        setUploadImage(true)
-        const image = await uploadImageToCloudinary(file)
-        formik.setFieldValue("images", [...formik.values.images, image])
-        setUploadImage(false)
-    }
-    const handleRemoveImage = (index) => {
-        const updateImages = [...formik.values.images]
-        updateImages.splice(index, 1)
-        formik.setFieldValue("images", updateImages)
-    }
+        const file = e.target.files[0];
+        setUploadImage(true);
+        const image = await uploadImageToCloudinary(file);
+        formik.setFieldValue("images", [...formik.values.images, image]);
+        setUploadImage(false);
+    };
 
+    const handleRemoveImage = (index) => {
+        const updateImages = [...formik.values.images];
+        updateImages.splice(index, 1);
+        formik.setFieldValue("images", updateImages);
+    };
 
     useEffect(() => {
         dispatch(getIngredientOfRestaurant({ jwt, id: restaurant.userRestaurant?.id }));
-        // console.log("Restaurant data:", restaurant);
     }, []);
-    
+
     useEffect(() => {
         dispatch(getAllCategory());
-        // console.log("Category data:", categorys);
     }, []);
-    
+
     return (
         <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
             <div className="lg:max-w-4xl">
@@ -151,24 +122,18 @@ const CreateMenuForm = () => {
                                 style={{ display: "none" }}
                                 onChange={handleImageChange}
                                 type="file" />
-
                             <label className="relative" htmlFor="fileInput">
-
-                                <span className="w-24 h-24 cursor-pointer flex items-center justify-center
-                    p-3 border rounded-md border-gray-600">
+                                <span className="w-24 h-24 cursor-pointer flex items-center justify-center p-3 border rounded-md border-gray-600">
                                     <AddPhotoAlternateIcon className="text-white" />
                                 </span>
-                                {
-                                    uploadImage && (
-                                        <div className="absolute left-0 right-0 top-0
-                    bottom-0 w-24 h-24 flex justify-center items-center
-                    ">
-                                            <CircularProgress />
-                                        </div>
-                                    )}
+                                {uploadImage && (
+                                    <div className="absolute left-0 right-0 top-0 bottom-0 w-24 h-24 flex justify-center items-center">
+                                        <CircularProgress />
+                                    </div>
+                                )}
                             </label>
                             <div className="flex flex-wrap gap-2">
-                                {formik.values.images.map((image, index) =>
+                                {formik.values.images.map((image, index) => (
                                     <div className="relative">
                                         <img
                                             className="w-24 h-24 object-cover"
@@ -186,10 +151,11 @@ const CreateMenuForm = () => {
                                             onClick={() => handleRemoveImage(index)}>
                                             <CloseIcon sx={{ fontSize: "1rem" }} />
                                         </IconButton>
-                                    </div>)}
+                                    </div>
+                                ))}
                             </div>
-
                         </Grid>
+
                         <Grid item xs={12}>
                             <TextField fullWidth
                                 id="name"
@@ -198,10 +164,11 @@ const CreateMenuForm = () => {
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.name}
-                            >
-
-                            </TextField>
+                                error={formik.touched.name && Boolean(formik.errors.name)}
+                                helperText={formik.touched.name && formik.errors.name}
+                            />
                         </Grid>
+
                         <Grid item xs={12}>
                             <TextField fullWidth
                                 id="description"
@@ -210,10 +177,9 @@ const CreateMenuForm = () => {
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.description}
-                            >
-                            </TextField>
-
+                            />
                         </Grid>
+
                         <Grid item xs={12} lg={6}>
                             <TextField fullWidth
                                 id="price"
@@ -222,14 +188,21 @@ const CreateMenuForm = () => {
                                 variant="outlined"
                                 onChange={formik.handleChange}
                                 value={formik.values.price}
-                            >
-
-                            </TextField>
+                                error={formik.touched.price && Boolean(formik.errors.price)}
+                                helperText={formik.touched.price && formik.errors.price}
+                            />
                         </Grid>
+
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="category-label">Danh mục</InputLabel>
-                                <Select labelId="category-label" id="categoryId" value={formik.values.categoryId} label="Danh mục" onChange={e => formik.setFieldValue('categoryId', e.target.value)}>
+                                <Select
+                                    labelId="category-label"
+                                    id="categoryId"
+                                    value={formik.values.categoryId}
+                                    label="Danh mục"
+                                    onChange={e => formik.setFieldValue('categoryId', e.target.value)}
+                                >
                                     {categorys.categorys.map((item) => (
                                         <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                                     ))}
@@ -255,22 +228,16 @@ const CreateMenuForm = () => {
                                             ))}
                                         </Box>
                                     )}
-                                // MenuProps={MenuProps}
                                 >
                                     {ingredients.ingredients?.map((item, index) => (
-                                        <MenuItem
-                                            key={item.id}
-                                            value={item}
-
-                                        >
+                                        <MenuItem key={item.id} value={item}>
                                             {item.name}
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
-
-
                         </Grid>
+
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Món chay</InputLabel>
@@ -282,11 +249,12 @@ const CreateMenuForm = () => {
                                     onChange={formik.handleChange}
                                     name="vegetarian"
                                 >
-                                      <MenuItem value={true}>Có</MenuItem>
-                                      <MenuItem value={false}>Không</MenuItem>
+                                    <MenuItem value={true}>Có</MenuItem>
+                                    <MenuItem value={false}>Không</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
+
                         <Grid item xs={12} lg={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="demo-simple-select-label">Theo mùa</InputLabel>
@@ -304,31 +272,29 @@ const CreateMenuForm = () => {
                             </FormControl>
                         </Grid>
                     </Grid>
+
                     <Button variant="contained" color="primary" type="submit">
-                       Tạo menu
-                        </Button>
-                       
-                        <Snackbar   
+                        Tạo menu
+                    </Button>
+
+                    <Snackbar
                         open={showNotification}
                         autoHideDuration={6000}
                         onClose={() => setShowNotification(false)}
-                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}  // Đưa thông báo vào giữa
                     >
-                        <Alert 
-                            onClose={() => setShowNotification(false)} 
+                        <Alert
+                            onClose={() => setShowNotification(false)}
                             severity={notificationType}
-                            sx={{
-                                fontSize: '1.25rem', // Tăng kích thước chữ
-                                padding: '15px',     // Tăng padding
-                            }}
+                            sx={{ width: '100%', 
+                                position:"top-center" }}
                         >
                             {message}
                         </Alert>
                     </Snackbar>
                 </form>
             </div>
-        </div >
-    )
-}
+        </div>
+    );
+};
 
-export default CreateMenuForm
+export default CreateMenuForm;

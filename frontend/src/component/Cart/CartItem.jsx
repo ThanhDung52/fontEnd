@@ -85,7 +85,7 @@ const CartItem = ({ item }) => {
                 </IconButton>
             </div>
 
-            <div className="pt-3 space-x-2">
+            <div className="pt-1 space-x-2 mb-9">
                 {item.ingredients.map((ingredient, index) => (
                     <Chip key={index} label={ingredient} />
                 ))}

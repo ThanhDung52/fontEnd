@@ -328,17 +328,19 @@ export const Address = () => {
 
   const handlePasswordUpdate = async () => {
     const newErrors = {};
-
+  
     if (!passwords.currentPassword)
       newErrors.currentPassword = "Mật khẩu hiện tại không được để trống.";
     if (!passwords.newPassword)
       newErrors.newPassword = "Mật khẩu mới không được để trống.";
+    else if (passwords.newPassword.length < 6)
+      newErrors.newPassword = "Mật khẩu mới phải có ít nhất 6 ký tự.";
     if (passwords.newPassword !== passwords.confirmPassword)
       newErrors.confirmPassword = "Mật khẩu xác nhận không khớp.";
-
+  
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
-
+  
     try {
       const response = await api.post(
         `/api/users/change-password`,

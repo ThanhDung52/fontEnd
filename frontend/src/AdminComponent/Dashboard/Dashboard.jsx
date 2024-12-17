@@ -378,7 +378,8 @@ window.lineChartInstance = new Chart(lineCtx, {
         </div>
         <div className="bg-white rounded-lg p-5 shadow-md">
           <h3 className="text-lg text-gray-800">Lợi Nhuận</h3>
-          <span className="text-2xl font-bold text-gray-800"> {totalRevenue.toLocaleString("vi-VN", {
+          <span className="text-2xl font-bold text-gray-800"> 
+            {totalRevenue.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",} 
             )} </span>

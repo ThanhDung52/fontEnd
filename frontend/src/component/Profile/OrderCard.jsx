@@ -12,7 +12,10 @@ export const OrderCard = ({ item, order }) => {
         <img className="h-16 w-16" src={item.food.images[0]} alt="" />
         <div>
           <p>{item.food.name}</p>
-          <p>{item.totalPrice}</p>
+          <p>{item.totalPrice.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",} 
+            )}</p>
         </div>
       </div>
  {/* Hiển thị địa chỉ dưới card */}

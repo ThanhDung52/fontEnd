@@ -1,72 +1,86 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { createIngredientCategory } from "../../component/State/Ingredients/Action";
 import { useDispatch, useSelector } from "react-redux";
-import Notification from "../Notification/Notification";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const CreateIngredientCategoryForm = () => {
-    const dispatch = useDispatch()
-    const {restaurant, loading, error} = useSelector(store =>store)
-    const jwt = localStorage.getItem("jwt")
-    const [message, setMessage] = useState('');
-    const [showNotification, setShowNotification] = useState(false);
-    const [formData, setFormData] = useState({ 
-        name: ""
-    })
-    const handleSubmit = (e) => {
-     e.preventDefault()
-     const data = {name:formData.name, restaurantId: restaurant.userRestaurant.id}
-        // console.log(formData);
-        
-        dispatch(createIngredientCategory({data:data,jwt}))
-        if (!error) {
-            setMessage("Thêm IngredietnCategory thành công");
-            setShowNotification(true);
+    const dispatch = useDispatch();
+    const { restaurant, loading } = useSelector((store) => store);
+    const jwt = localStorage.getItem("jwt");
 
-            setTimeout(() => {
-                setShowNotification(false);
-            }, 2000);
-        } else {
-            setMessage("Thêm IngredientCategory không thành công. Vui lòng thử lại.");
-            setShowNotification(true);
+    const [formData, setFormData] = useState({ name: "" });
+    const [formErrors, setFormErrors] = useState({});
+
+    const validateForm = () => {
+        const errors = {};
+        if (!formData.name.trim()) {
+            errors.name = "Tên danh mục không được để trống.";
         }
-        
-    }
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
+        const data = { name: formData.name, restaurantId: restaurant.userRestaurant.id };
+
+        dispatch(createIngredientCategory({ data, jwt }))
+            .then(() => {
+                toast.success("Thêm danh mục nguyên liệu thành công!", {
+                    position: "top-center",
+                    autoClose: 3000,
+                });
+                setFormData({ name: "" }); // Reset form
+            })
+            .catch(() => {
+                toast.error("Thêm danh mục nguyên liệu không thành công. Vui lòng thử lại.", {
+                    position: "top-center",
+                    autoClose: 3000,
+                });
+            });
+    };
+
     const handleInputChange = (e) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setFormData({
-            ...formData, [name]: value
-        })
-    }
+            ...formData,
+            [name]: value,
+        });
+    };
+
     return (
-        <div className="">
-            <div className="p-5">
-                <h1 className="text-gray-400 text-center text-xl pb-10">Thêm mới danh mục thành phàn</h1>
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    <TextField fullWidth
-                        id="name"
-                        name="name"
-                        label="Danh mục"
-                        variant="outlined"
-                        onChange={handleInputChange}
-                        value={formData.name}
-                    >
-
-                    </TextField>
-                    <Button variant="contained" type="submit" >
-                        Thêm mới
-                    </Button>
-                    {showNotification && (
-                        <Notification
-                            message={message}
-                            type={error ? "error" : "success"}
-                            onClose={() => setShowNotification(false)}
-                        />
-                    )}
-                </form>
-            </div>
+        <div className="p-5">
+            <Typography variant="h5" className="text-center pb-5">
+                Tạo danh mục nguyên liệu
+            </Typography>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+                <TextField
+                    fullWidth
+                    id="name"
+                    name="name"
+                    label="Tên danh mục"
+                    variant="outlined"
+                    onChange={handleInputChange}
+                    value={formData.name}
+                    error={!!formErrors.name}
+                    helperText={formErrors.name}
+                />
+                <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={loading}
+                    style={{ marginTop: "10px" }}
+                >
+                    Tạo danh mục
+                </Button>
+            </form>
+            {/* ToastContainer để hiển thị thông báo */}
+            <ToastContainer />
         </div>
-    )
-}
-
+    );
+};

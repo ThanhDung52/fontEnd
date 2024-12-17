@@ -7,7 +7,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 
 export const Dashboard = () => {
     const dispatch = useDispatch();
-    const { restaurant } = useSelector((store) => store);
+    const { restaurant,restaurantOrder } = useSelector((store) => store);
     const jwt = localStorage.getItem("jwt");
     const [selectedMonth, setSelectedMonth] = useState(0); // 0 là tất cả các tháng
 
@@ -64,6 +64,9 @@ export const Dashboard = () => {
     }));
 
     const COLORS = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#3B82F6', '#8B5CF6'];
+
+
+    
 
     return (
         <Box sx={{ marginTop: '2rem' }}>
@@ -164,7 +167,10 @@ export const Dashboard = () => {
                                         }
                                     </p>
                                     <p className="mt-2 text-gray-500">Doanh thu tổng:
-                                        {totalRevenue || 0}
+                                        {totalRevenue.toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",} 
+            )}
                                     </p>
                                 </div>
                             </div>

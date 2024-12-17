@@ -12,13 +12,14 @@ export const PayMentSuccess =()=>{
                 <Card className="box w-full lg:w-1/4 flex flex-col items-center rounded-md p-5">
                     <TaskAltIcon sx={{fontSize:"5rem", color:green[500]}}/>
                     <h1 className="py-5 text-2xl font-semibold">
-                        Order success
+                        Đặt hàng thành công
                     </h1>
                     <p className="py-3 text-center text-gray-400">
-                        Thank you for choosing our restaurant! we appreciate your order
-                    </p>
+                    Cảm ơn bạn đã lựa chọn nhà hàng của chúng tôi! chúc bạn ngon miệng
+
+                        </p>
                     <p className="py-2 text-center text-gray-200 text-lg">
-                        Have A Greate Day!
+                        Chúc bạn có một ngày tốt lành!
                     </p>
                     <Button onClick={()=>navigate("/")} variant="contained" className="p-5" sx={{margin:"1rem 0rem"}}>Go To Home</Button>
                 </Card>
